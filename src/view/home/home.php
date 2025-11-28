@@ -26,7 +26,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a class="dropdown-item" href="#" data-section="estoque">
+                            <a class="dropdown-item" href="#" data-section="estoque_inicio">
                                 <i class="fas fa-box-open"></i> Estoque do Dia
                             </a>
                         </li>
@@ -83,11 +83,14 @@
         <!-- Seção Histórico -->
         <?php require_once __DIR__ . '/../estoque/estoque_historico.php'; ?>
 
+        <!-- Seção Inicial do SITE-->
+        <?php require_once __DIR__ . '/../estoque/estoque_inicio.php'; ?>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="<?php echo BASE_URL; ?>/assets/js/navegacao.js"></script>
     <script src="<?php echo BASE_URL; ?>/assets/js/utils.js"></script>
+    <script src="<?php echo BASE_URL; ?>/assets/js/estoque.js"></script>
     <script src="<?php echo BASE_URL; ?>/assets/js/core.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
