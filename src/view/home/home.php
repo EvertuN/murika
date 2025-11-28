@@ -12,7 +12,7 @@
 </head>
 <nav class="navbar navbar-expand-lg header">
     <div class="container-fluid px-4">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="home.php">
             <i class="fas fa-hotel"></i> MURIKA
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
