@@ -94,6 +94,14 @@ body {
     background-color: #7a0001;
     border-color: #7a0001;
 }
+
+.btn-primary:focus,
+.btn-primary:active {
+    background-color: #7a0001;
+    border-color: #6e0001;
+    box-shadow: 0 0 0 0.2rem rgba(156, 0, 1, 0.5);
+}
+
 .form-control,
 .form-select {
     background-color: var(--card-bg);
