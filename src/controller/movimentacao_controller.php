@@ -76,6 +76,44 @@ function registrarMovimentacao() {
         // Calcular nova quantidade
         if ($tipo === 'entrada') {
             $quantidade_posterior = $quantidade_anterior + $quantidade;
+            
+            // Se for entrada no frigobar, diminuir automaticamente da recepção
+            if ($local === 'frigobar') {
+                // Buscar estoque na recepção
+                $stmt = $pdo->prepare("SELECT quantidade_atual FROM estoque_quantidade WHERE id_item = :id AND local = 'recepcao'");
+                $stmt->execute([':id' => $id_item]);
+                $estoque_recepcao = $stmt->fetch(PDO::FETCH_ASSOC);
+                
+                if (!$estoque_recepcao) {
+                    // Se não existe estoque na recepção, criar com 0
+                    $stmt = $pdo->prepare("INSERT INTO estoque_quantidade (id_item, local, quantidade_atual, quantidade_minima) VALUES (:id, 'recepcao', 0, 10)");
+                    $stmt->execute([':id' => $id_item]);
+                    $quantidade_anterior_recepcao = 0;
+                } else {
+                    $quantidade_anterior_recepcao = intval($estoque_recepcao['quantidade_atual']);
+                }
+                
+                // Verificar se tem estoque suficiente na recepção
+                if ($quantidade_anterior_recepcao < $quantidade) {
+                    throw new Exception('Quantidade insuficiente no estoque da recepção');
+                }
+                
+                // Diminuir da recepção
+                $quantidade_posterior_recepcao = $quantidade_anterior_recepcao - $quantidade;
+                $stmt = $pdo->prepare("UPDATE estoque_quantidade SET quantidade_atual = :qtd WHERE id_item = :id AND local = 'recepcao'");
+                $stmt->execute([':qtd' => $quantidade_posterior_recepcao, ':id' => $id_item]);
+                
+                // Registrar saída na recepção (movimentação automática)
+                $stmt = $pdo->prepare("INSERT INTO estoque_movimentacao (id_item, local, tipo, quantidade, quantidade_anterior, quantidade_posterior, observacao, responsavel) VALUES (:id_item, 'recepcao', 'saida', :qtd, :qtd_ant, :qtd_pos, :obs, :resp)");
+                $stmt->execute([
+                    ':id_item' => $id_item,
+                    ':qtd' => $quantidade,
+                    ':qtd_ant' => $quantidade_anterior_recepcao,
+                    ':qtd_pos' => $quantidade_posterior_recepcao,
+                    ':obs' => 'Transferência automática para frigobar',
+                    ':resp' => $responsavel
+                ]);
+            }
         } else {
             $quantidade_posterior = $quantidade_anterior - $quantidade;
             if ($quantidade_posterior < 0) {

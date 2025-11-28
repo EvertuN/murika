@@ -83,5 +83,18 @@ SELECT
 FROM `estoque_quantidade` eq
 JOIN `estoque_item` ei ON eq.id_item = ei.id_item
 ORDER BY ei.nome, eq.local;
+
+-- ============================================
+-- REVERSÃO: Remover colunas de transferência
+-- ============================================
+
+-- Remover colunas de transferência da tabela de movimentação
+ALTER TABLE `estoque_movimentacao`
+DROP COLUMN `local_destino`,
+DROP COLUMN `local_origem`;
+
+-- Voltar o ENUM do tipo para apenas entrada e saida
+ALTER TABLE `estoque_movimentacao`
+MODIFY COLUMN `tipo` ENUM('entrada', 'saida') NOT NULL;
 ```
 
