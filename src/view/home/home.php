@@ -12,7 +12,7 @@
 </head>
 <nav class="navbar navbar-expand-lg header">
     <div class="container-fluid px-4">
-        <a class="navbar-brand" href="home.php">
+        <a class="navbar-brand" href="/">
             <i class="fas fa-hotel"></i> MURIKA
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -81,7 +81,7 @@
         <?php require_once __DIR__ . '/../estoque/estoque_item.php'; ?>
 
         <!-- Seção Histórico -->
-
+        <?php require_once __DIR__ . '/../estoque/estoque_historico.php'; ?>
         <!-- Seção Inicial do SITE-->
         <?php require_once __DIR__ . '/../estoque/estoque_inicio.php'; ?>
     </div>
@@ -95,7 +95,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Inicializa o CRUD de Categoria
             categoriaCORE = new CategoriaCORE({
-                apiEndpoint: '/api/categoria.php',
+                apiEndpoint: '/api/categoria',
                 formCadastroId: 'formCadastroCategoria',
                 formEditId: 'formEditarCategoria',
                 tabelaId: 'tabelaCategorias',
@@ -106,7 +106,7 @@
 
             // Inicializa o CRUD de Item
             itemCORE = new ItemCORE({
-                apiEndpoint: '/api/item.php',
+                apiEndpoint: '/api/item',
                 formCadastroId: 'formCadastroItem',
                 formEditId: 'formEditarItem',
                 tabelaId: 'tabelaItens',

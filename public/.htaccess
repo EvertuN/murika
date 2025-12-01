@@ -1,7 +1,21 @@
 # Ativar reescrita
 RewriteEngine On
 
-# Mostrar index.php se nenhum arquivo for encontrado
+# Permitir acesso a arquivos estáticos
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteCond %{REQUEST_URI} \.(css|js|jpg|jpeg|png|gif|ico|svg|woff|woff2|ttf|eot|html)$ [NC]
+RewriteRule ^ - [L]
+
+# Permitir acesso direto ao index.php
+RewriteCond %{REQUEST_URI} ^/index\.php$ [NC]
+RewriteRule ^ - [L]
+
+# Redirecionar tudo para index.php se não for arquivo ou diretório
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
+
+# Bloquear acesso direto a outros arquivos PHP (deve ser a última regra)
+RewriteCond %{REQUEST_URI} \.php$ [NC]
+RewriteCond %{REQUEST_URI} !^/index\.php$ [NC]
+RewriteRule ^(.*)$ - [F,L]

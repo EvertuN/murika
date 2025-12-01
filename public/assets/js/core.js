@@ -47,7 +47,7 @@ class COREManager {
         const formData = new FormData(form);
         formData.append('acao', 'cadastrar');
 
-        fetch(this.apiEndpoint, {
+        fetchAPI(this.apiEndpoint, {
             method: 'POST',
             body: formData
         })
@@ -68,7 +68,7 @@ class COREManager {
         const formData = new FormData(form);
         formData.append('acao', 'editar');
 
-        fetch(this.apiEndpoint, {
+        fetchAPI(this.apiEndpoint, {
             method: 'POST',
             body: formData
         })
@@ -88,7 +88,7 @@ class COREManager {
     }
 
     carregarDados() {
-        fetch(`${this.apiEndpoint}?acao=listar`)
+        fetchAPI(`${this.apiEndpoint}?acao=listar`)
             .then(response => response.json())
             .then(data => {
                 this.renderizarTabela(data);
@@ -119,7 +119,7 @@ class COREManager {
     }
 
     carregarCategoriasSelect() {
-        fetch('/api/categoria.php?acao=listar')
+        fetchAPI('/api/categoria?acao=listar')
             .then(response => response.json())
             .then(data => {
                 const options = (data.success ? data.data : []).map(cat =>
@@ -146,7 +146,7 @@ class COREManager {
         formData.append('acao', 'deletar');
         formData.append('id', id);
 
-        fetch(this.apiEndpoint, {
+        fetchAPI(this.apiEndpoint, {
             method: 'POST',
             body: formData
         })

@@ -1,7 +1,7 @@
 // Gerenciador de Estoque
 class EstoqueManager {
     constructor() {
-        this.apiEndpoint = '/api/movimentacao.php';
+        this.apiEndpoint = '/api/movimentacao';
         this.init();
     }
 
@@ -84,7 +84,7 @@ class EstoqueManager {
     }
 
     carregarResumo() {
-        fetch(`${this.apiEndpoint}?acao=resumo`)
+        fetchAPI(`${this.apiEndpoint}?acao=resumo`)
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
@@ -100,7 +100,7 @@ class EstoqueManager {
     }
 
     carregarEstoqueRecepcao() {
-        fetch(`${this.apiEndpoint}?acao=listar_estoque&local=recepcao`)
+        fetchAPI(`${this.apiEndpoint}?acao=listar_estoque&local=recepcao`)
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
@@ -113,7 +113,7 @@ class EstoqueManager {
     }
 
     carregarEstoqueFrigobar() {
-        fetch(`${this.apiEndpoint}?acao=listar_estoque&local=frigobar`)
+        fetchAPI(`${this.apiEndpoint}?acao=listar_estoque&local=frigobar`)
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
@@ -164,7 +164,7 @@ class EstoqueManager {
     }
 
     carregarHistorico() {
-        fetch(`${this.apiEndpoint}?acao=listar_historico&limite=50`)
+        fetchAPI(`${this.apiEndpoint}?acao=listar_historico&limite=50`)
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
@@ -213,7 +213,7 @@ class EstoqueManager {
             return;
         }
 
-        fetch(`${this.apiEndpoint}?acao=listar_itens_por_local&local=${local}`)
+        fetchAPI(`${this.apiEndpoint}?acao=listar_itens_por_local&local=${local}`)
             .then(response => response.json())
             .then(data => {
                 if (data.success && data.data.length > 0) {
@@ -255,7 +255,7 @@ class EstoqueManager {
         formData.append('acao', 'registrar');
         formData.append('responsavel', 'Usuário'); // TODO: Pegar do sistema de autenticação
 
-        fetch(this.apiEndpoint, {
+        fetchAPI(this.apiEndpoint, {
             method: 'POST',
             body: formData
         })
