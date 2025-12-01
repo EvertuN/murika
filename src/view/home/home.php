@@ -81,7 +81,6 @@
         <?php require_once __DIR__ . '/../estoque/estoque_item.php'; ?>
 
         <!-- Seção Histórico -->
-        <?php require_once __DIR__ . '/../estoque/estoque_historico.php'; ?>
 
         <!-- Seção Inicial do SITE-->
         <?php require_once __DIR__ . '/../estoque/estoque_inicio.php'; ?>

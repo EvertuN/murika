@@ -57,7 +57,7 @@
         <div class="col-lg-6 mb-4">
             <div class="card">
                 <h4>
-                    <i class="fas fa-building"></i> Estoque Recepção
+                    Estoque
                 </h4>
                 <div class="mb-3">
                     <input type="text" class="form-control" placeholder="🔍 Buscar item..." id="buscaRecepcao">
@@ -87,7 +87,7 @@
         <div class="col-lg-6 mb-4">
             <div class="card">
                 <h4>
-                    <i class="fas fa-snowflake"></i> Estoque Frigobar
+                    Frigobar
                 </h4>
                 <div class="mb-3">
                     <input type="text" class="form-control" placeholder="🔍 Buscar item..." id="buscaFrigobar">
@@ -166,7 +166,7 @@
                         <label class="form-label">Local *</label>
                         <select name="local" class="form-select" id="selectLocal" required>
                             <option value="">Selecione...</option>
-                            <option value="0">Recepção</option>
+                            <option value="0">Estoque</option>
                             <option value="1">Frigobar</option>
                         </select>
                     </div>

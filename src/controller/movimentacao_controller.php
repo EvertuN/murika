@@ -283,15 +283,15 @@ function listarItensPorLocal() {
     } elseif ($local === '1' || $local === 'frigobar') {
         $local_real = 'frigobar';
         // Para frigobar, apenas itens que controlam frigobar
-        $sql = "SELECT 
-                    i.id_item,
-                    i.nome,
-                    c.nome_categoria
-                FROM estoque_item i
-                LEFT JOIN estoque_categorias_item c ON i.id_categoria = c.id_categoria
+    $sql = "SELECT 
+                i.id_item,
+                i.nome,
+                c.nome_categoria
+            FROM estoque_item i
+            LEFT JOIN estoque_categorias_item c ON i.id_categoria = c.id_categoria
                 WHERE i.controla_frigobar = 1
-                ORDER BY i.nome";
-        $stmt = $pdo->prepare($sql);
+            ORDER BY i.nome";
+    $stmt = $pdo->prepare($sql);
         $stmt->execute();
     } else {
         echo json_encode(['success' => false, 'message' => 'Local inválido']);
@@ -302,4 +302,3 @@ function listarItensPorLocal() {
     
     echo json_encode(['success' => true, 'data' => $itens]);
 }
-
