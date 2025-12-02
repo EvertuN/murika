@@ -1,6 +1,6 @@
 <?php
 /**
- * Verifica se a requisição é válida (vem do próprio sistema)
+ * Verifica se a requisição é válida
  * Bloqueia acesso direto via URL
  */
 function verificarRequisicaoValida() {
@@ -26,18 +26,12 @@ function verificarRequisicaoValida() {
     );
     
     // Bloquear acesso direto se NÃO tiver:
-    // 1. O header customizado do sistema OU
-    // 2. Referer válido (vindo do mesmo domínio) E requisição AJAX/Fetch
+    // O header customizado do sistema OU
+    // Referer válido (vindo do mesmo domínio) E requisição AJAX/Fetch
     $requisicaoValida = $hasSystemHeader || ($refererValido && $isAjax);
     
     if (!$requisicaoValida) {
-        http_response_code(403);
-        header('Content-Type: application/json');
-        echo json_encode([
-            'success' => false, 
-            'message' => 'Acesso negado.'
-        ]);
+        header('Location: ' . base_url());
         exit;
     }
 }
-
