@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../config/database.php';
-require_once __DIR__ . '/../model/categoria_model.php';
+require_once __DIR__ . '/../model/estoque_categoria_model.php';
 
 header('Content-Type: application/json');
 
