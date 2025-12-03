@@ -63,10 +63,35 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="fas fa-user-circle"></i> Perfil
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-user-circle"></i> <?php echo htmlspecialchars($_SESSION['nome'] ?? 'Usuário'); ?>
                     </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <!-- <li>
+                            <a class="dropdown-item" href="#" data-section="auth_usuario_logs">
+                                <i class="fas fa-history"></i> Meus Acessos
+                            </a>
+                        </li> -->
+                        <?php if (isAdmin()): ?>
+                        <li>
+                            <a class="dropdown-item" href="#" data-section="lista_usuario">
+                                <i class="fas fa-users"></i> Gerenciar Usuários
+                            </a>
+                        </li>
+                        <!-- <li>
+                            <a class="dropdown-item" href="#" data-section="auth_admin_logs">
+                                <i class="fas fa-clipboard-list"></i> Logs do Sistema
+                            </a>
+                        </li> -->
+                        <?php endif; ?>
+                        <!-- <li><hr class="dropdown-divider"></li> -->
+                        <li>
+                            <a class="dropdown-item" href="/logout">
+                                <i class="fas fa-sign-out-alt"></i> Sair
+                            </a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </div>
@@ -84,6 +109,13 @@
         <?php require_once __DIR__ . '/../estoque/estoque_historico.php'; ?>
         <!-- Seção Inicial do SITE-->
         <?php require_once __DIR__ . '/../estoque/estoque_inicio.php'; ?>
+        
+        <!-- Seções de Autenticação -->
+        <?php require_once __DIR__ . '/../auth/auth_admin_senha.php'; ?>
+        <?php require_once __DIR__ . '/../auth/auth_usuario_logs.php'; ?>
+        <?php if (isAdmin()): ?>
+            <?php require_once __DIR__ . '/../auth/auth_admin_usuarios.php'; ?>
+        <?php endif; ?>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
@@ -91,6 +123,7 @@
     <script src="<?php echo BASE_URL; ?>/assets/js/utils.js"></script>
     <script src="<?php echo BASE_URL; ?>/assets/js/estoque.js"></script>
     <script src="<?php echo BASE_URL; ?>/assets/js/core.js"></script>
+    <script src="<?php echo BASE_URL; ?>/assets/js/auth.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Inicializa o CRUD de Categoria
@@ -115,6 +148,34 @@
                 selectCategoriaEditId: 'editSelectCategoria',
                 mensagemCadastroId: 'mensagem-item',
                 mensagemListaId: 'mensagem-lista-item'
+            });
+
+            // Inicializa o CRUD de Usuário (apenas para admin)
+            <?php if (isAdmin()): ?>
+            usuarioCORE = new UsuarioCORE({
+                apiEndpoint: '/api/usuario',
+                formCadastroId: 'formCadastroUsuario',
+                formEditId: 'formEditarUsuario',
+                tabelaId: 'tabelaUsuarios',
+                modalEditId: 'modalEditarUsuario',
+                mensagemCadastroId: 'mensagem-usuario',
+                mensagemListaId: 'mensagem-lista-usuario'
+            });
+            <?php endif; ?>
+
+            // Inicializa alteração de senha
+            setupAlterarSenha();
+
+            // Carregar logs quando a seção for ativada
+            document.querySelectorAll('[data-section]').forEach(link => {
+                link.addEventListener('click', function() {
+                    const sectionId = this.getAttribute('data-section');
+                    if (sectionId === 'auth_admin_logs') {
+                        carregarLogsAdmin();
+                    } else if (sectionId === 'auth_usuario_logs') {
+                        carregarLogsUsuario();
+                    }
+                });
             });
         });
 
