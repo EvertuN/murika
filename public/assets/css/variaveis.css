@@ -1,0 +1,24 @@
+:root {
+    /* Cores do sistema */
+    --primary-color: #9c0001;
+    --secondary-color: #7a0001;
+    --tertiary-color: rgba(156, 0, 1, 0.1);
+    --bg-color: #f8f9fa;
+    --card-bg: #ffffff;
+    --text-color: #212529;
+    --border-color: #dee2e6;
+    --box-shadow: rgba(0, 0, 0, 0.1);
+
+    /* Movimentações BADGE */
+    --badge-entrada: #155724;
+    --badge-bg-entrada: #d4edda;
+    --badge-saida: #721c24;
+    --badge-bg-saida: #f8d7da;
+
+    /*NavBar*/
+    --navbar-primary: #ffffff;
+    --navbar-secondary: rgba(255, 255, 255, 0.1);
+
+    /* Fontes do Sistema */
+    --primary-Font: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
