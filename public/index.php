@@ -1,5 +1,7 @@
 <?php
 require_once "../env.php";
+require_once "../src/config/auth.php";
+
 $url = isset($_GET['url']) ? $_GET['url'] : '';
 $url = trim($url, '/');
 
@@ -13,8 +15,11 @@ if (preg_match('/[^a-zA-Z0-9\-_\/]/', $url) || strpos($url, '..') !== false) {
 $urlParts = explode('/', $url);
 $primeiraParte = $urlParts[0] ?? '';
 
-// Rotas da API
+// Rotas da API - REQUEREM AUTENTICAÇÃO
 if ($primeiraParte === 'api') {
+    // Verificar autenticação
+    requerAutenticacao();
+    
     // Carregar verificação de segurança
     require_once "../src/config/api_security.php";
     
@@ -24,7 +29,7 @@ if ($primeiraParte === 'api') {
     $apiEndpoint = $urlParts[1] ?? '';
     
     // Validar endpoint da API
-    $apisPermitidas = ['item', 'categoria', 'movimentacao'];
+    $apisPermitidas = ['item', 'categoria', 'movimentacao', 'usuario', 'logs'];
     
     if (!in_array($apiEndpoint, $apisPermitidas)) {
         http_response_code(404);
@@ -33,30 +38,56 @@ if ($primeiraParte === 'api') {
     }
     
     // Carregar o controller correspondente
-    // O DOCUMENT_ROOT aponta para a pasta public, então precisamos subir um nível
     $root = dirname(__DIR__);
     $controllerPath = $root . '/src/controller/';
     
     switch ($apiEndpoint) {
         case 'item':
-            require_once $controllerPath . 'item_controller.php';
+            require_once $controllerPath . 'estoque_item_controller.php';
             break;
         case 'categoria':
-            require_once $controllerPath . 'categoria_controller.php';
+            require_once $controllerPath . 'estoque_categoria_controller.php';
             break;
         case 'movimentacao':
-            require_once $controllerPath . 'movimentacao_controller.php';
+            require_once $controllerPath . 'estoque_movimentacao_controller.php';
+            break;
+        case 'usuario':
+            require_once $controllerPath . 'auth_usuario_controller.php';
+            break;
+        case 'logs':
+            require_once $controllerPath . 'auth_logs_controller.php';
             break;
     }
     exit;
 }
 
-// Lista de rotas permitidas (não-API)
-$rotasPermitidas = ['', 'login', 'relatorio'];
+// Rotas públicas (não requerem autenticação)
+$rotasPublicas = ['login', 'logout'];
 
-if (!in_array($url, $rotasPermitidas)) {
-    header('Location: /');
+// Processar login
+$erro = null;
+if ($url === 'login' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    $usuario = $_POST['usuario'] ?? '';
+    $senha = $_POST['senha'] ?? '';
+    
+    if (autenticar($usuario, $senha)) {
+        header('Location: /');
+        exit;
+    } else {
+        $erro = "Usuário ou senha inválidos.";
+    }
+}
+
+// Processar logout
+if ($url === 'logout') {
+    logout();
+    header('Location: /login?msg=logout');
     exit;
+}
+
+// Proteger rotas que requerem autenticação
+if (!in_array($url, $rotasPublicas)) {
+    requerAutenticacao();
 }
 
 // Roteamento
@@ -64,12 +95,22 @@ switch ($url) {
     case '':
     case 'home':
         require_once "../src/config/database.php";
+        require_once "../src/config/auth.php";
         require_once "../src/view/home/home.php";
         break;
     case 'login':
-        require_once "../src/view/login/login.php";
+        // Se já estiver autenticado, redirecionar para home
+        if (isAuthenticated()) {
+            header('Location: /');
+            exit;
+        }
+        // Passar variável de erro para a view
+        require_once "../src/view/login/auth_login.php";
         break;   
     case 'relatorio':
-        require_once "../public/modelo/modelogpt.php";
+        require_once "../public/modelo/modelo.php";
         break;
+    default:
+        header('Location: /');
+        exit;
 }
