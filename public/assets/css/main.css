@@ -15,7 +15,6 @@ body {
     -webkit-overflow-scrolling: touch;
     display: 100%;
     justify-content: center;
-
 }
 .header {
     background-color: var(--primary-color);
@@ -35,7 +34,6 @@ body {
 /* .navbar-brand:hover {
     color: red !important;
 } */
-
 .navbar-nav .nav-link {
     color: var(--navbar-primary) !important;
     padding: 1rem 1.2rem !important;
