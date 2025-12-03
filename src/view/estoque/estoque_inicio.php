@@ -196,34 +196,3 @@
         </div>
     </div>
 </div>
-
-<style>
-/* Estilos específicos da página de estoque */
-.tipo-badge { 
-    font-size: 0.8rem; 
-    padding: 0.3rem 0.6rem;
-    border-radius: 6px;
-    font-weight: 500;
-}
-.badge-entrada { 
-    background-color: #d4edda; 
-    color: #155724; 
-}
-.badge-saida { 
-    background-color: #f8d7da; 
-    color: #721c24; 
-}
-.table th {
-    color: var(--primary-color);
-    font-size: 0.9rem;
-    font-weight: 600;
-}
-.table td {
-    vertical-align: middle;
-    font-size: 0.9rem;
-}
-.btn-sm {
-    padding: 0.25rem 0.5rem;
-    font-size: 0.85rem;
-}
-</style>
