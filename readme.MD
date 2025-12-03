@@ -12,89 +12,32 @@ containers:
 
 ## DB
 ```
--- ============================================
--- MIGRAÇÃO: Adicionar coluna LOCAL (corrigido)
--- ============================================
-
--- 1. Remover a foreign key constraint primeiro
-ALTER TABLE `estoque_quantidade` 
-DROP FOREIGN KEY `estoque_quantidade_ibfk_1`;
-
--- 2. Remover a constraint UNIQUE do id_item
-ALTER TABLE `estoque_quantidade` 
-DROP INDEX `id_item`;
-
--- 3. Adicionar coluna LOCAL
-ALTER TABLE `estoque_quantidade` 
-ADD COLUMN `local` ENUM('recepcao', 'frigobar') NOT NULL DEFAULT 'recepcao' AFTER `id_item`;
-
--- 4. Criar UNIQUE KEY composto (id_item + local)
-ALTER TABLE `estoque_quantidade` 
-ADD UNIQUE KEY `unique_item_local` (`id_item`, `local`);
-
--- 5. Recriar a foreign key
-ALTER TABLE `estoque_quantidade` 
-ADD CONSTRAINT `estoque_quantidade_ibfk_1` 
-FOREIGN KEY (`id_item`) REFERENCES `estoque_item` (`id_item`) ON DELETE CASCADE;
-
--- 6. Adicionar coluna LOCAL na tabela de movimentação
-ALTER TABLE `estoque_movimentacao` 
-ADD COLUMN `local` ENUM('recepcao', 'frigobar') NOT NULL DEFAULT 'recepcao' AFTER `id_item`;
-
--- 7. Adicionar índice para melhorar performance de consultas
-ALTER TABLE `estoque_movimentacao` 
-ADD INDEX `idx_item_local` (`id_item`, `local`);
-
--- ============================================
--- OPCIONAL: Criar registros de frigobar para itens que controlam frigobar
--- ============================================
-
--- Inserir registro de frigobar para itens que têm controla_frigobar = 1
-INSERT INTO `estoque_quantidade` (`id_item`, `local`, `quantidade_atual`, `quantidade_minima`)
-SELECT 
-    ei.id_item,
-    'frigobar' AS local,
-    0 AS quantidade_atual,
-    10 AS quantidade_minima
-FROM `estoque_item` ei
-WHERE ei.controla_frigobar = 1
-AND NOT EXISTS (
-    SELECT 1 
-    FROM `estoque_quantidade` eq 
-    WHERE eq.id_item = ei.id_item 
-    AND eq.local = 'frigobar'
+CREATE TABLE auth_users (
+id CHAR(36) PRIMARY KEY,
+nome VARCHAR(100) NOT NULL,
+usuario VARCHAR(50) NOT NULL UNIQUE,
+senha VARCHAR(255) NOT NULL,
+tipo ENUM('admin','usuario') NOT NULL DEFAULT 'usuario',
+ativo TINYINT(1) NOT NULL DEFAULT 1
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- ============================================
--- VERIFICAÇÃO: Conferir a estrutura
--- ============================================
+CREATE TABLE `auth_tentativa_login` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `ip` varchar(45) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `attempt_time` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+);
 
--- Ver a nova estrutura da tabela
-DESCRIBE `estoque_quantidade`;
-
--- Ver os registros atualizados
-SELECT 
-    eq.id_estoque,
-    ei.nome AS item,
-    eq.local,
-    eq.quantidade_atual,
-    eq.quantidade_minima,
-    ei.controla_frigobar
-FROM `estoque_quantidade` eq
-JOIN `estoque_item` ei ON eq.id_item = ei.id_item
-ORDER BY ei.nome, eq.local;
-
--- ============================================
--- REVERSÃO: Remover colunas de transferência
--- ============================================
-
--- Remover colunas de transferência da tabela de movimentação
-ALTER TABLE `estoque_movimentacao`
-DROP COLUMN `local_destino`,
-DROP COLUMN `local_origem`;
-
--- Voltar o ENUM do tipo para apenas entrada e saida
-ALTER TABLE `estoque_movimentacao`
-MODIFY COLUMN `tipo` ENUM('entrada', 'saida') NOT NULL;
+CREATE TABLE `auth_logs` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` varchar(36) DEFAULT NULL,
+  `action` varchar(50) NOT NULL,
+  `details` json DEFAULT NULL,
+  `ip` varchar(45) NOT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+)
 ```
 
