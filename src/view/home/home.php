@@ -78,6 +78,11 @@
                             <a class="dropdown-item" href="#" data-section="lista_usuario">
                                 <i class="fas fa-users"></i> Gerenciar Usuários
                             </a>
+                        </li>      
+                        <li>
+                            <a class="dropdown-item" href="#" data-section="painel_admin">
+                                <i class="fas fa-users"></i> HUB
+                            </a>
                         </li>
                         <!-- <li>
                             <a class="dropdown-item" href="#" data-section="auth_admin_logs">
@@ -107,8 +112,12 @@
 
         <!-- Seção Histórico -->
         <?php require_once __DIR__ . '/../estoque/estoque_historico.php'; ?>
+
         <!-- Seção Inicial do SITE-->
         <?php require_once __DIR__ . '/../estoque/estoque_inicio.php'; ?>
+
+        <!-- Seções do Perfil -->
+        <?php require_once __DIR__ . '/../auth/auth_admin_index.php'; ?>
         
         <!-- Seções de Autenticação -->
         <?php require_once __DIR__ . '/../auth/auth_admin_senha.php'; ?>
