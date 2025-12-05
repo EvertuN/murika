@@ -1,0 +1,85 @@
+@import 'variaveis.css';
+
+/* Estilos dos itens do menu administrativo */
+.auth-admin-menu-item {
+    border-left: 4px solid var(--primary-color);
+    transition: all 0.3s;
+    background-color: var(--bg-color);
+    margin-bottom: 4px;
+    border-radius: 4px;
+}
+
+.auth-admin-menu-item:hover,
+.auth-admin-menu-item:focus {
+    border-left-color: var(--primary-color);
+    background-color: var(--tertiary-color);
+    outline: none;
+}
+
+/* Quando o link do HUB/Admin fica "active" (Bootstrap adiciona .active) */
+.list-group-item.auth-admin-menu-item.active {
+    background-color: var(--tertiary-color) !important;
+    color: var(--text-color) !important;
+    border-color: transparent !important;
+}
+
+.auth-admin-menu-icon {
+    font-size: 2rem;
+    color: var(--primary-color);
+    width: 60px;
+    text-align: center;
+}
+
+.auth-admin-menu-title {
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.auth-admin-menu-desc {
+    color: #6c757d;
+    margin-bottom: 0;
+}
+
+.auth-admin-menu-arrow {
+    color: #9c0001;
+    font-size: 1.5rem;
+}
+
+/* Estilos para o card de estatísticas (seção comentada) */
+.auth-admin-stats-card {
+    background: linear-gradient(135deg, #9c0001, #c50001);
+    color: white;
+    border: none;
+    padding: 1.5rem;
+    border-radius: 8px;
+}
+
+.auth-admin-stats-title {
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+.auth-admin-stats-item {
+    margin-bottom: 1.5rem;
+}
+
+.auth-admin-stats-item-border {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding-top: 1rem;
+}
+
+.auth-admin-stats-value {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+.auth-admin-stats-success {
+    color: #90ee90;
+}
+
+.auth-admin-stats-label {
+    margin: 0;
+    opacity: 0.9;
+}
