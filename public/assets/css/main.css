@@ -8,6 +8,7 @@ body {
     margin: 0;
     overflow: hidden;
 }
+
 .main-content {
     padding: 2.5rem 20rem;
     height: calc(100vh - 64px);
@@ -16,6 +17,7 @@ body {
     display: 100%;
     justify-content: center;
 }
+
 .header {
     background-color: var(--primary-color);
     padding: 0;
@@ -25,12 +27,14 @@ body {
     height: 64px;
     z-index: 1000;
 }
+
 .navbar-brand {
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--navbar-primary) !important;
     padding: 1rem 0;
 }
+
 /* .navbar-brand:hover {
     color: red !important;
 } */
@@ -40,10 +44,12 @@ body {
     font-weight: 500;
     transition: all 0.3s;
 }
+
 .navbar-nav .nav-link:hover {
     background-color: var(--navbar-secondary);
     color: var(--navbar-primary) !important;
 }
+
 /* .navbar-nav .nav-link.active {
     background-color: rgba(255, 255, 255, 0.15);
     color: white !important;
@@ -54,23 +60,28 @@ body {
     border-radius: 8px;
     margin-top: 0;
 }
+
 .dropdown-item {
     padding: 0.7rem 1.5rem;
     transition: all 0.2s;
 }
+
 .dropdown-item:hover {
     background-color: var(--tertiary-color);
     color: var(--primary-color);
 }
+
 .dropdown-item i {
     width: 20px;
     margin-right: 10px;
 }
+
 .page-title {
     margin-bottom: 2rem;
     font-weight: 600;
     color: var(--primary-color);
 }
+
 .card {
     background-color: var(--card-bg);
     border: 1px solid var(--border-color);
@@ -79,11 +90,13 @@ body {
     margin-bottom: 1.5rem;
     box-shadow: 0 2px 8px var(--box-shadow);
 }
+
 .card h4 {
     color: var(--primary-color);
     margin-bottom: 1.5rem;
     font-weight: 600;
 }
+
 .btn-primary {
     background-color: var(--primary-color);
     border-color: var(--primary-color);
@@ -91,15 +104,52 @@ body {
     padding: 0.6rem 1.5rem;
     font-weight: 500;
 }
+
 .btn-primary:hover {
     background-color: var(--secondary-color);
     border-color: var(--secondary-color);
 }
 
+/* Global override for button focus ring (removes Bootstrap Blue) */
+.btn:focus,
+.btn.focus,
+.btn:focus-visible,
+.btn.active {
+    box-shadow: 0 0 0 0.2rem var(--tertiary-color) !important;
+    outline: none !important;
+}
+
 .btn-primary:focus,
-.btn-primary:active {
-    background-color: var(--secondary-color);
-    box-shadow: 0 0 0 0.2rem var(--tertiary-color);
+.btn-primary:active,
+.btn-primary.active,
+.btn-primary:focus-visible,
+.show>.btn-primary.dropdown-toggle {
+    background-color: var(--secondary-color) !important;
+    border-color: var(--secondary-color) !important;
+    color: #fff !important;
+    box-shadow: 0 0 0 0.2rem var(--tertiary-color) !important;
+    outline: none !important;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+.btn-secondary:focus,
+.btn-secondary:active,
+.btn-secondary.active,
+.btn-secondary:focus-visible {
+    background-color: #545b62 !important;
+    border-color: #545b62 !important;
+    color: white !important;
+    box-shadow: 0 0 0 0.2rem var(--tertiary-color) !important;
 }
 
 .form-control,
@@ -110,6 +160,7 @@ body {
     border-radius: 8px;
     padding: 0.6rem 1rem;
 }
+
 .form-control:focus,
 .form-select:focus {
     background-color: var(--card-bg);
@@ -117,11 +168,13 @@ body {
     color: var(--text-color);
     box-shadow: 0 0 0 0.2rem var(--tertiary-color);
 }
+
 .form-label {
     font-weight: 500;
     margin-bottom: 0.5rem;
     color: var(--text-color);
 }
+
 /* .table {
     color: var(--text-color);
 }
@@ -142,6 +195,7 @@ body {
     font-weight: 500;
     font-size: 0.85rem;
 }
+
 /* .badge-success {
     background-color: #003bfc;
 }
@@ -155,9 +209,11 @@ body {
 .section {
     display: none;
 }
+
 .section.active {
     display: block;
 }
+
 /* STATUS CARD, ATUALMENTE INATIVO */
 .stat-card {
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
@@ -167,10 +223,13 @@ body {
     margin-bottom: 1.5rem;
     box-shadow: 0 4px 12px var(--box-shadow);
 }
+
 .stat-card h3 {
     font-size: 3rem;
     margin: 0;
     font-weight: 700;
+}
+
 .stat-card p {
     margin: 0.5rem 0 0;
     opacity: 0.9;
@@ -180,48 +239,56 @@ body {
 .dropdown-item:active {
     background-color: transparent !important;
     color: inherit !important;
-}
     font-size: 1.1rem;
 }
+
 .btn-outline-secondary {
     border-color: var(--border-color);
     color: var(--text-color);
 }
+
 .btn-outline-secondary:hover {
     background-color: var(--bg-color);
     border-color: var(--border-color);
 }
+
 .navbar-toggler {
     border-color: rgba(255, 255, 255, 0.3);
 }
+
 .navbar-toggler-icon {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
 
 /* STYLE MOVIMENTAÇÕES */
-.tipo-badge { 
-    font-size: 0.8rem; 
+.tipo-badge {
+    font-size: 0.8rem;
     padding: 0.3rem 0.6rem;
     border-radius: 6px;
     font-weight: 500;
 }
-.badge-entrada { 
-    background-color: var(--badge-bg-entrada); 
-    color: var(--badge-entrada); 
+
+.badge-entrada {
+    background-color: var(--badge-bg-entrada);
+    color: var(--badge-entrada);
 }
-.badge-saida { 
-    background-color: var(--badge-bg-saida); 
-    color: var(--badge-saida); 
+
+.badge-saida {
+    background-color: var(--badge-bg-saida);
+    color: var(--badge-saida);
 }
+
 .table th {
     color: var(--primary-color);
     font-size: 0.9rem;
     font-weight: 600;
 }
+
 .table td {
     vertical-align: middle;
     font-size: 0.9rem;
 }
+
 .btn-sm {
     padding: 0.25rem 0.5rem;
     font-size: 0.85rem;
