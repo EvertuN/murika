@@ -76,13 +76,8 @@
                         </li> -->
                         <?php if (isAdmin()): ?>
                         <li>
-                            <a class="dropdown-item" href="#" data-section="lista_usuario">
-                                <i class="fas fa-users"></i> Gerenciar Usuários
-                            </a>
-                        </li>      
-                        <li>
                             <a class="dropdown-item" href="#" data-section="painel_admin">
-                                <i class="fas fa-users"></i> HUB
+                                <i class="fas fa-users"></i> Painel do Administrador
                             </a>
                         </li>
                         <!-- <li>

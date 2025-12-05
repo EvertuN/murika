@@ -1,4 +1,4 @@
-<div id="painel_admin" class="section active">
+<div id="painel_admin" class="section">
     <div class="row mb-2">
         <div class="col-md-12">
             <h2 class="page-title">Painel do Administrador</h2>
