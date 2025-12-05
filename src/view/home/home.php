@@ -77,7 +77,7 @@
                         <?php if (isAdmin()): ?>
                         <li>
                             <a class="dropdown-item" href="#" data-section="painel_admin">
-                                <i class="fas fa-users"></i> Painel do Administrador
+                                <i class="fas fa-users"></i> Painel Admin
                             </a>
                         </li>
                         <!-- <li>

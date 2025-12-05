@@ -10,7 +10,7 @@
     <link rel="icon" type="image/x-icon" href="<?php echo BASE_URL; ?>/assets/image/icon.svg">
     <style>
         body {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            background: var(--bg-color);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -19,7 +19,7 @@
         }
         .login-container {
             width: 100%;
-            max-width: 400px;
+            max-width: 500px;
             padding: 2rem;
         }
         .login-card {
@@ -53,9 +53,8 @@
     <div class="login-container">
         <div class="login-card">
             <div class="login-header">
-                <i class="fas fa-hotel"></i>
+                <img src="<?php echo BASE_URL; ?>/assets/image/icon.svg" width="50" height="60">
                 <h2>MURIKA</h2>
-                <p>Sistema de Gestão de Hotel</p>
             </div>
             
             <?php if (isset($_GET['msg'])): ?>
