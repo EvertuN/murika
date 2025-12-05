@@ -1,5 +1,5 @@
 <div class="section active" id="estoque_inicio">
-    
+
     <!-- Cabeçalho -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="page-title mb-0">
@@ -52,7 +52,7 @@
 
     <!-- Estoques Lado a Lado -->
     <div class="row">
-        
+
         <!-- Estoque Recepção -->
         <div class="col-lg-6 mb-4">
             <div class="card">
