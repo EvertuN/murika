@@ -138,7 +138,8 @@
                 tabelaId: 'tabelaCategorias',
                 modalEditId: 'modalEditarCategoria',
                 mensagemCadastroId: 'mensagem-categoria',
-                mensagemListaId: 'mensagem-lista'
+                mensagemListaId: 'mensagem-lista',
+                isAdmin: <?php echo isAdmin() ? 'true' : 'false'; ?>
             });
 
             // Inicializa o CRUD de Item
@@ -151,7 +152,8 @@
                 selectCategoriaId: 'selectCategoria',
                 selectCategoriaEditId: 'editSelectCategoria',
                 mensagemCadastroId: 'mensagem-item',
-                mensagemListaId: 'mensagem-lista-item'
+                mensagemListaId: 'mensagem-lista-item',
+                isAdmin: <?php echo isAdmin() ? 'true' : 'false'; ?>
             });
 
             // Inicializa o CRUD de Usuário (apenas para admin)

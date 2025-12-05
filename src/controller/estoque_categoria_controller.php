@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../config/auth.php';
 require_once __DIR__ . '/../model/estoque_categoria_model.php';
 
 header('Content-Type: application/json');
@@ -38,6 +39,11 @@ switch($acao) {
         break;
 
     case 'deletar':
+        requerAutenticacao();
+        if (!isAdmin()) {
+            echo json_encode(['success' => false, 'message' => 'Acesso negado. Apenas administradores podem deletar categorias.']);
+            break;
+        }
         $id = $_POST['id'] ?? 0;
         if($categoriaModel->deletar($id)) {
             echo json_encode(['success' => true, 'message' => 'Categoria deletada com sucesso!']);
@@ -47,6 +53,11 @@ switch($acao) {
         break;
 
     case 'editar':
+        requerAutenticacao();
+        if (!isAdmin()) {
+            echo json_encode(['success' => false, 'message' => 'Acesso negado. Apenas administradores podem editar categorias.']);
+            break;
+        }
         $id = $_POST['id'] ?? 0;
         $nome = trim($_POST['nome_categoria'] ?? '');
         

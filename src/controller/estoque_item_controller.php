@@ -73,6 +73,12 @@ function listarItens() {
 }
 
 function editarItem() {
+    requerAutenticacao();
+    if (!isAdmin()) {
+        echo json_encode(['success' => false, 'message' => 'Acesso negado. Apenas administradores podem editar itens.']);
+        return;
+    }
+
     $db = new Database();
     $pdo = $db->connect();
     
@@ -145,7 +151,15 @@ function editarItem() {
     }
 }
 
+require_once __DIR__ . '/../config/auth.php';
+
 function deletarItem() {
+    requerAutenticacao();
+    if (!isAdmin()) {
+        echo json_encode(['success' => false, 'message' => 'Acesso negado. Apenas administradores podem deletar itens.']);
+        return;
+    }
+
     $db = new Database();
     $pdo = $db->connect();
     $id = intval($_POST['id'] ?? 0);

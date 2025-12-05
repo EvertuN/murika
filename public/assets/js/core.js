@@ -9,6 +9,7 @@ class COREManager {
         this.modalEditId = config.modalEditId;
         this.selectCategoriaId = config.selectCategoriaId;
         this.selectCategoriaEditId = config.selectCategoriaEditId;
+        this.isAdmin = config.isAdmin || false;
 
         this.init();
     }
@@ -171,12 +172,14 @@ class CategoriaCORE extends COREManager {
                 <td>${item.id_categoria}</td>
                 <td>${item.nome_categoria}</td>
                 <td>
+                    ${this.isAdmin ? `
                     <button class="btn btn-sm btn-dark" onclick="editarCategoria(${item.id_categoria}, '${item.nome_categoria.replace(/'/g, "&#39;")}')">
                         <i class="fas fa-edit"></i> Editar
                     </button>
                     <button class="btn btn-sm btn-danger" onclick="categoriaCORE.deletar(${item.id_categoria})">
                         <i class="fas fa-trash"></i> Deletar
                     </button>
+                    ` : ''}
                 </td>
             </tr>
         `;
@@ -192,12 +195,14 @@ class ItemCORE extends COREManager {
                 <td>${item.nome_categoria || 'Sem categoria'}</td>
                 <td class="text-center">${item.controla_frigobar == 1 ? 'Sim' : 'Não'}</td>
                 <td>
+                    ${this.isAdmin ? `
                     <button class="btn btn-sm btn-dark" onclick="abrirEditarItem(${item.id_item}, '${item.nome.replace(/'/g, "&#39;")}', ${item.id_categoria}, ${item.controla_frigobar})">
                         <i class="fas fa-edit"></i> Editar
                     </button>
                     <button class="btn btn-sm btn-danger" onclick="itemCORE.deletar(${item.id_item})">
                         <i class="fas fa-trash"></i> Deletar
                     </button>
+                    ` : ''}
                 </td>
             </tr>
         `;
