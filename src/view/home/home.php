@@ -8,6 +8,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/main.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/css/auth_admin.css">
     <link rel="icon" type="image/x-icon" href="<?php echo BASE_URL; ?>/assets/image/icon.svg">
 </head>
 <nav class="navbar navbar-expand-lg header">
@@ -120,7 +121,6 @@
         <?php require_once __DIR__ . '/../auth/auth_admin_index.php'; ?>
         
         <!-- Seções de Autenticação -->
-        <?php require_once __DIR__ . '/../auth/auth_admin_senha.php'; ?>
         <?php require_once __DIR__ . '/../auth/auth_usuario_logs.php'; ?>
         <?php if (isAdmin()): ?>
             <?php require_once __DIR__ . '/../auth/auth_admin_usuarios.php'; ?>
