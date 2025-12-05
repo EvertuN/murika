@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../config/auth.php';
 
 header('Content-Type: application/json');
 
@@ -32,11 +33,19 @@ function registrarMovimentacao() {
     try {
         $pdo->beginTransaction();
         
+        // Check authentication
+        if (!isAuthenticated()) {
+            throw new Exception('Usuário não autenticado');
+        }
+        
+        $id_usuario = intval($_SESSION['id']);
+        $nome_usuario = $_SESSION['nome'];
+        
         $tipo = $_POST['tipo'] ?? '';
         $id_item = intval($_POST['id_item'] ?? 0);
         $quantidade = intval($_POST['quantidade'] ?? 0);
         $observacao = trim($_POST['observacao'] ?? '');
-        $responsavel = trim($_POST['responsavel'] ?? 'Sistema');
+        $responsavel = $nome_usuario; // Use logged user name
         
         // Determinar local baseado no select (0 = recepcao, 1 = frigobar)
         $local_input = $_POST['local'] ?? '';
@@ -104,9 +113,10 @@ function registrarMovimentacao() {
                 $stmt->execute([':qtd' => $quantidade_posterior_recepcao, ':id' => $id_item]);
                 
                 // Registrar saída na recepção (movimentação automática)
-                $stmt = $pdo->prepare("INSERT INTO estoque_movimentacao (id_item, local, tipo, quantidade, quantidade_anterior, quantidade_posterior, observacao, responsavel) VALUES (:id_item, 'recepcao', 'saida', :qtd, :qtd_ant, :qtd_pos, :obs, :resp)");
+                $stmt = $pdo->prepare("INSERT INTO estoque_movimentacao (id_item, id_usuario, local, tipo, quantidade, quantidade_anterior, quantidade_posterior, observacao, responsavel) VALUES (:id_item, :id_usuario, 'recepcao', 'saida', :qtd, :qtd_ant, :qtd_pos, :obs, :resp)");
                 $stmt->execute([
                     ':id_item' => $id_item,
+                    ':id_usuario' => $id_usuario,
                     ':qtd' => $quantidade,
                     ':qtd_ant' => $quantidade_anterior_recepcao,
                     ':qtd_pos' => $quantidade_posterior_recepcao,
@@ -126,9 +136,10 @@ function registrarMovimentacao() {
         $stmt->execute([':qtd' => $quantidade_posterior, ':id' => $id_item, ':local' => $local]);
         
         // Registrar movimentação com local
-        $stmt = $pdo->prepare("INSERT INTO estoque_movimentacao (id_item, local, tipo, quantidade, quantidade_anterior, quantidade_posterior, observacao, responsavel) VALUES (:id_item, :local, :tipo, :qtd, :qtd_ant, :qtd_pos, :obs, :resp)");
+        $stmt = $pdo->prepare("INSERT INTO estoque_movimentacao (id_item, id_usuario, local, tipo, quantidade, quantidade_anterior, quantidade_posterior, observacao, responsavel) VALUES (:id_item, :id_usuario, :local, :tipo, :qtd, :qtd_ant, :qtd_pos, :obs, :resp)");
         $stmt->execute([
             ':id_item' => $id_item,
+            ':id_usuario' => $id_usuario,
             ':local' => $local,
             ':tipo' => $tipo,
             ':qtd' => $quantidade,

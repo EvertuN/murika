@@ -1,12 +1,12 @@
-<!-- <div id="historico" class="section">
+<div id="historico" class="section">
     <div class="card">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h4>Histórico de Movimentações</h4>
             <div>
                 <input type="date" class="form-control" style="width: 200px; display: inline-block;">
-                <button class="btn btn-primary ms-2">
+                <!-- <button class="btn btn-primary ms-2">
                     <i class="fas fa-download"></i> Exportar
-                </button>
+                </button> -->
             </div>
         </div>
         <div class="table-responsive">
@@ -29,4 +29,4 @@
     </table>
 </div>
     </div>
-</div> -->
+</div>

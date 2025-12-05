@@ -115,7 +115,7 @@
     </div>
 
     <!-- Histórico de Movimentações -->
-    <div class="card">
+    <!-- <div class="card">
         <h4>
             <i class="fas fa-history"></i> Últimas Movimentações
         </h4>
@@ -138,7 +138,7 @@
                 </tbody>
             </table>
         </div>
-    </div>
+    </div> -->
 
 </div>
 

@@ -253,7 +253,6 @@ class EstoqueManager {
     registrarMovimentacao(form) {
         const formData = new FormData(form);
         formData.append('acao', 'registrar');
-        formData.append('responsavel', 'Usuário'); // TODO: Pegar do sistema de autenticação
 
         fetchAPI(this.apiEndpoint, {
             method: 'POST',
