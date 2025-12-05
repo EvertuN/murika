@@ -41,3 +41,6 @@ CREATE TABLE `auth_logs` (
 )
 ```
 
+#Melhorias
+
+Admin não consegue desativar usuarios, logs não possível de acessar
