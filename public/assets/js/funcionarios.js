@@ -1,5 +1,3 @@
-console.log('funcionarios.js carregado!');
-
 // Classes específicas para Funcionários e Cargos
 class FuncionarioCORE extends COREManager {
     constructor(config) {
@@ -12,9 +10,7 @@ class FuncionarioCORE extends COREManager {
         
         // Agora sim atribuir às propriedades da instância
         this.selectCargoId = selectCargoId;
-        this.selectCargoEditId = selectCargoEditId;
-        console.log('FuncionarioCORE criado com selectCargoId:', this.selectCargoId);
-        
+        this.selectCargoEditId = selectCargoEditId;        
         // Carregar cargos após construção completa
         if (this.selectCargoId) {
             setTimeout(() => this.carregarCargosSelect(), 200);
@@ -22,16 +18,12 @@ class FuncionarioCORE extends COREManager {
     }
 
     init() {
-        console.log('FuncionarioCORE.init() chamado');
-        console.log('this.selectCargoId =', this.selectCargoId);
         super.init();
         
         // Carregar cargos após super.init() e garantir que DOM está pronto
         if (this.selectCargoId) {
-            console.log('Entrando no if do selectCargoId');
             // Tentar carregar imediatamente
             setTimeout(() => {
-                console.log('Tentando carregar cargos...');
                 this.carregarCargosSelect();
             }, 100);
             
@@ -39,7 +31,6 @@ class FuncionarioCORE extends COREManager {
             const observer = new MutationObserver(() => {
                 const select = document.getElementById(this.selectCargoId);
                 if (select && select.offsetParent !== null) {
-                    console.log('Seção de funcionário visível, recarregando cargos');
                     this.carregarCargosSelect();
                     observer.disconnect();
                 }
@@ -51,16 +42,13 @@ class FuncionarioCORE extends COREManager {
                 attributeFilter: ['class']
             });
         } else {
-            console.log('selectCargoId é falsy:', this.selectCargoId);
         }
     }
 
     carregarCargosSelect() {
-        console.log('Carregando cargos para select...');
         fetchAPI('/api/cargo?acao=listar')
             .then(response => response.json())
             .then(data => {
-                console.log('Cargos recebidos:', data);
                 
                 if (!data.success) {
                     console.error('Erro ao carregar cargos:', data.message);
@@ -75,7 +63,6 @@ class FuncionarioCORE extends COREManager {
                     const select = document.getElementById(this.selectCargoId);
                     if (select) {
                         select.innerHTML = '<option value="">Selecione...</option>' + options;
-                        console.log('Select cargo cadastro atualizado com', data.data.length, 'opções');
                     } else {
                         console.error('Select cargo cadastro não encontrado:', this.selectCargoId);
                     }
@@ -85,7 +72,6 @@ class FuncionarioCORE extends COREManager {
                     const selectEdit = document.getElementById(this.selectCargoEditId);
                     if (selectEdit) {
                         selectEdit.innerHTML = '<option value="">Selecione...</option>' + options;
-                        console.log('Select cargo edição atualizado');
                     } else {
                         console.error('Select cargo edição não encontrado:', this.selectCargoEditId);
                     }
