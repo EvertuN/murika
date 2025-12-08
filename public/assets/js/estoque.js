@@ -54,11 +54,48 @@ class EstoqueManager {
             dataInput.value = `${ano}-${mes}-${dia}`;
         }
 
+        // Load employees when modal opens
+        const modal = document.getElementById('modalGerarRelatorio');
+        if (modal) {
+            modal.addEventListener('show.bs.modal', () => {
+                this.carregarFuncionarios();
+            });
+        }
+
         // Submissão do formulário
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             this.gerarRelatorio(form);
         });
+    }
+
+    async carregarFuncionarios() {
+        const select = document.getElementById('selectFuncionarioRelatorio');
+        if (!select) return;
+
+        try {
+            const response = await fetch('/api/funcionarios?acao=listar', {
+                headers: {
+                    'X-Murika-Request': 'true'
+                }
+            });
+            const data = await response.json();
+
+            if (data.success && data.data) {
+                select.innerHTML = '<option value="">Selecione o recepcionista...</option>';
+                data.data.forEach(func => {
+                    const option = document.createElement('option');
+                    option.value = func.id_funcionario;
+                    option.textContent = func.nome;
+                    select.appendChild(option);
+                });
+            } else {
+                select.innerHTML = '<option value="">Erro ao carregar funcionários</option>';
+            }
+        } catch (error) {
+            console.error('Erro ao carregar funcionários:', error);
+            select.innerHTML = '<option value="">Erro ao carregar funcionários</option>';
+        }
     }
 
     setupBusca() {
@@ -403,15 +440,16 @@ class EstoqueManager {
         const formData = new FormData(form);
         const data = formData.get('data');
         const turno = formData.get('turno');
+        const funcionario = formData.get('funcionario');
         
-        if (!data || !turno) {
+        if (!data || !turno || !funcionario) {
             this.mostrarMensagem('Por favor, preencha todos os campos', 'warning');
             return;
         }
         
         // Build report URL - call controller directly
         const baseUrl = window.location.origin;
-        const reportUrl = `${baseUrl}/api/relatorio?data=${data}&turno=${turno}`;
+        const reportUrl = `${baseUrl}/api/relatorio?data=${data}&turno=${turno}&funcionario=${funcionario}`;
         
         // Open report in new window
         const reportWindow = window.open(reportUrl, '_blank', 'width=1000,height=800');
