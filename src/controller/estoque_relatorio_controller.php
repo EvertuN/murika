@@ -57,6 +57,18 @@ function renderizarRelatorio() {
     
     $data_filtro = $_GET['data'] ?? date('Y-m-d');
     $turno = $_GET['turno'] ?? '1';
+    $id_funcionario = intval($_GET['funcionario'] ?? 0);
+    
+    // Get employee name
+    $nome_funcionario = 'N/A';
+    if ($id_funcionario > 0) {
+        $stmt = $pdo->prepare("SELECT nome FROM hotel_funcionarios WHERE id_funcionario = :id");
+        $stmt->execute([':id' => $id_funcionario]);
+        $funcionario = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($funcionario) {
+            $nome_funcionario = $funcionario['nome'];
+        }
+    }
     
     // Calculate shift time range
     if ($turno === '1') {
@@ -244,7 +256,7 @@ function renderizarRelatorio() {
     
     // Replace placeholders - Header info
     $template = str_replace('[DATA_DO_SISTEMA]', date('d/m/Y', strtotime($data_filtro)), $template);
-    $template = str_replace('[NOME_DO_FUNCIONARIO]', $_SESSION['nome'] ?? 'N/A', $template);
+    $template = str_replace('[NOME_DO_FUNCIONARIO]', $nome_funcionario, $template);
     $template = str_replace('[HORA_INICIO]', $hora_inicio, $template);
     $template = str_replace('[HORA_FIM]', $hora_fim, $template);
     $template = str_replace('[DURACAO_CALCULADA]', $duracao, $template);
