@@ -227,6 +227,13 @@
                         </select>
                     </div>
 
+                    <div class="mb-3">
+                        <label class="form-label">Recepcionista *</label>
+                        <select name="funcionario" id="selectFuncionarioRelatorio" class="form-select" required>
+                            <option value="">Carregando...</option>
+                        </select>
+                    </div>
+
                     <div class="alert alert-info">
                         <i class="fas fa-info-circle"></i> O relatório será aberto em uma nova janela e poderá ser impresso ou salvo como PDF.
                     </div>
