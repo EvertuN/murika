@@ -50,6 +50,34 @@
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        <i class="fa-solid fa-users"></i> Funcionarios
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="#" data-section="cadastrar_funcionario">
+                                <i class="fa-solid fa-table-list"></i> Novo Funcionario
+                            </a>
+                        </li> 
+                        <li>
+                            <a class="dropdown-item" href="#" data-section="cadastrar_cargo">
+                                <i class="fa-solid fa-layer-group"></i> Novo Cargo
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item" href="#" data-section="listar_cargos">
+                                <i class="fa-solid fa-briefcase"></i> Listar Cargos
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#" data-section="listar_funcionarios">
+                                <i class="fa-solid fa-users"></i> Listar Funcionários
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                         <i class="fa-solid fa-circle-plus"></i> Cadastrar
                     </a>
                     <ul class="dropdown-menu">
@@ -60,6 +88,16 @@
                         </li>                        <li>
                             <a class="dropdown-item" href="#" data-section="cadastrar_categoria_item">
                                 <i class="fa-solid fa-layer-group"></i> Categoria
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#" data-section="listar_cargos">
+                                <i class="fa-solid fa-briefcase"></i> Cargo
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#" data-section="listar_funcionarios">
+                                <i class="fa-solid fa-users"></i> Funcionário
                             </a>
                         </li>
                     </ul>
@@ -120,6 +158,10 @@
         <?php if (isAdmin()): ?>
             <?php require_once __DIR__ . '/../auth/auth_admin_usuarios.php'; ?>
         <?php endif; ?>
+
+        <!-- Seções de Funcionarios -->
+        <?php require_once __DIR__ . '/../funcionarios/hotel_cargo.php'; ?>
+        <?php require_once __DIR__ . '/../funcionarios/hotel_funcionarios.php'; ?>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
@@ -128,6 +170,7 @@
     <script src="<?php echo BASE_URL; ?>/assets/js/estoque.js"></script>
     <script src="<?php echo BASE_URL; ?>/assets/js/core.js"></script>
     <script src="<?php echo BASE_URL; ?>/assets/js/auth.js"></script>
+    <script src="<?php echo BASE_URL; ?>/assets/js/funcionarios.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Inicializa o CRUD de Categoria
@@ -153,6 +196,32 @@
                 selectCategoriaEditId: 'editSelectCategoria',
                 mensagemCadastroId: 'mensagem-item',
                 mensagemListaId: 'mensagem-lista-item',
+                isAdmin: <?php echo isAdmin() ? 'true' : 'false'; ?>
+            });
+
+            // Inicializa o CRUD de Funcionário
+            funcionarioCORE = new FuncionarioCORE({
+                apiEndpoint: '/api/funcionarios',
+                formCadastroId: 'formCadastroFuncionario',
+                formEditId: 'formEditarFuncionario',
+                tabelaId: 'tabelaFuncionarios',
+                modalEditId: 'modalEditarFuncionario',
+                selectCargoId: 'selectCargo',
+                selectCargoEditId: 'editSelectCargo',
+                mensagemCadastroId: 'mensagem-funcionario',
+                mensagemListaId: 'mensagem-lista-funcionario',
+                isAdmin: <?php echo isAdmin() ? 'true' : 'false'; ?>
+            });
+
+            // Inicializa o CRUD de Cargo
+            cargoCORE = new CargoCORE({
+                apiEndpoint: '/api/cargo',
+                formCadastroId: 'formCadastroCargo',
+                formEditId: 'formEditarCargo',
+                tabelaId: 'tabelaCargos',
+                modalEditId: 'modalEditarCargo',
+                mensagemCadastroId: 'mensagem-cargo',
+                mensagemListaId: 'mensagem-lista-cargo',
                 isAdmin: <?php echo isAdmin() ? 'true' : 'false'; ?>
             });
 
