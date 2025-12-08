@@ -120,7 +120,7 @@ function registrarMovimentacao() {
                     ':qtd' => $quantidade,
                     ':qtd_ant' => $quantidade_anterior_recepcao,
                     ':qtd_pos' => $quantidade_posterior_recepcao,
-                    ':obs' => 'Transferência automática para frigobar',
+                    ':obs' => $observacao,
                     ':resp' => $responsavel
                 ]);
             }

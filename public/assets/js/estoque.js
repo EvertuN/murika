@@ -12,6 +12,7 @@ class EstoqueManager {
         this.carregarEstoqueFrigobar();
         this.carregarHistorico();
         this.setupFormMovimentacao();
+        this.setupFormRelatorio();
         this.setupBusca();
         this.setupFiltroHistorico(); // New setup
         this.setupTabs();
@@ -35,6 +36,28 @@ class EstoqueManager {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             this.registrarMovimentacao(form);
+        });
+    }
+
+    setupFormRelatorio() {
+        const form = document.getElementById('formRelatorio');
+        if (!form) return;
+
+        const dataInput = document.getElementById('dataRelatorio');
+        
+        // Set default date to today
+        if (dataInput) {
+            const hoje = new Date();
+            const ano = hoje.getFullYear();
+            const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+            const dia = String(hoje.getDate()).padStart(2, '0');
+            dataInput.value = `${ano}-${mes}-${dia}`;
+        }
+
+        // Submissão do formulário
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.gerarRelatorio(form);
         });
     }
 
@@ -374,6 +397,37 @@ class EstoqueManager {
             }
         }, 5000);
     }
+
+
+    gerarRelatorio(form) {
+        const formData = new FormData(form);
+        const data = formData.get('data');
+        const turno = formData.get('turno');
+        
+        if (!data || !turno) {
+            this.mostrarMensagem('Por favor, preencha todos os campos', 'warning');
+            return;
+        }
+        
+        // Build report URL - call controller directly
+        const baseUrl = window.location.origin;
+        const reportUrl = `${baseUrl}/api/relatorio?data=${data}&turno=${turno}`;
+        
+        // Open report in new window
+        const reportWindow = window.open(reportUrl, '_blank', 'width=1000,height=800');
+        
+        if (reportWindow) {
+            // Close modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('modalGerarRelatorio'));
+            if (modal) {
+                modal.hide();
+            }
+            this.mostrarMensagem('Relatório gerado com sucesso!', 'success');
+        } else {
+            this.mostrarMensagem('Por favor, permita pop-ups para visualizar o relatório', 'warning');
+        }
+    }
+
 
     escapeHtml(text) {
         const div = document.createElement('div');

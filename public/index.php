@@ -20,16 +20,17 @@ if ($primeiraParte === 'api') {
     // Verificar autenticação
     requerAutenticacao();
     
-    // Carregar verificação de segurança
-    require_once "../src/config/api_security.php";
-    
-    // Verificar se a requisição é válida (vem do próprio sistema)
-    verificarRequisicaoValida();
-    
     $apiEndpoint = $urlParts[1] ?? '';
     
+    // Carregar verificação de segurança (exceto para relatório que precisa abrir em nova janela)
+    if ($apiEndpoint !== 'relatorio') {
+        require_once "../src/config/api_security.php";
+        // Verificar se a requisição é válida (vem do próprio sistema)
+        verificarRequisicaoValida();
+    }
+    
     // Validar endpoint da API
-    $apisPermitidas = ['item', 'categoria', 'movimentacao', 'usuario', 'logs'];
+    $apisPermitidas = ['item', 'categoria', 'movimentacao', 'usuario', 'logs', 'relatorio'];
     
     if (!in_array($apiEndpoint, $apisPermitidas)) {
         http_response_code(404);
@@ -56,6 +57,9 @@ if ($primeiraParte === 'api') {
             break;
         case 'logs':
             require_once $controllerPath . 'auth_logs_controller.php';
+            break;
+        case 'relatorio':
+            require_once $controllerPath . 'estoque_relatorio_controller.php';
             break;
     }
     exit;

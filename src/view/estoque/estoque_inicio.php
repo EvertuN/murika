@@ -5,9 +5,14 @@
         <h2 class="page-title mb-0">
             Estoque do Dia
         </h2>
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalNovaMovimentacao">
-            <i class="fas fa-plus"></i> Nova Movimentação
-        </button>
+        <div class="d-flex gap-2">
+            <button class="btn-action btn-action-primary" data-bs-toggle="modal" data-bs-target="#modalGerarRelatorio">
+                <i class="fas fa-file-alt"></i> Gerar Relatório
+            </button>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalNovaMovimentacao">
+                <i class="fas fa-plus"></i> Nova Movimentação
+            </button>
+        </div>
     </div>
 
     <!-- Cards de Resumo -->
@@ -190,6 +195,44 @@
 
                     <button type="submit" class="btn btn-primary w-100">
                         <i class="fas fa-save"></i> Registrar Movimentação
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Gerar Relatório -->
+<div class="modal fade" id="modalGerarRelatorio" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-file-alt"></i> Gerar Relatório de Turno</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="mensagem-relatorio"></div>
+                <form id="formRelatorio">
+                    <div class="mb-3">
+                        <label class="form-label">Data do Relatório *</label>
+                        <input type="date" name="data" class="form-control" id="dataRelatorio" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Turno *</label>
+                        <select name="turno" class="form-select" required>
+                            <option value="">Selecione...</option>
+                            <option value="1">Turno 1 (06:00 - 18:00)</option>
+                            <option value="2">Turno 2 (18:00 - 06:00)</option>
+                        </select>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i> O relatório será aberto em uma nova janela e poderá ser impresso ou salvo como PDF.
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-file-alt"></i> Gerar Relatório
                     </button>
                 </form>
             </div>
