@@ -39,6 +39,20 @@ CREATE TABLE `auth_logs` (
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 )
+
+CREATE TABLE hotel_cargo (
+	id_cargo INT NOT NULL AUTO_INCREMENT,
+	cargo VARCHAR(25),
+	PRIMARY KEY (id_cargo)
+);
+
+CREATE TABLE hotel_funcionarios (
+	id_funcionario INT NOT NULL AUTO_INCREMENT,
+	nome VARCHAR(50) NOT NULL,
+	id_cargo INT,
+	PRIMARY KEY (id_funcionario),
+	FOREIGN KEY (id_cargo) REFERENCES hotel_cargo(id_cargo)
+);
 ```
 
 #Melhorias
