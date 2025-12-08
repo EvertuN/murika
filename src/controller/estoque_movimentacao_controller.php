@@ -203,7 +203,54 @@ function listarHistorico() {
     $db = new Database();
     $pdo = $db->connect();
     
+    $pagina = intval($_GET['pagina'] ?? 1);
     $limite = intval($_GET['limite'] ?? 50);
+    $offset = ($pagina - 1) * $limite;
+    
+    $data_filtro = $_GET['data'] ?? '';
+    $turno = $_GET['turno'] ?? '';
+    
+    $where_clauses = [];
+    $params = [];
+    
+    // Fix: Se turno selecionado mas sem data, usar data atual
+    if (!empty($turno) && empty($data_filtro)) {
+        $data_filtro = date('Y-m-d');
+    }
+    
+    if (!empty($data_filtro)) {
+        if ($turno === '1') {
+            // Turno 1: 06:00 às 18:00 do dia selecionado
+            $where_clauses[] = "m.data_movimentacao >= :data_inicio AND m.data_movimentacao < :data_fim";
+            $params[':data_inicio'] = "$data_filtro 06:00:00";
+            $params[':data_fim'] = "$data_filtro 18:00:00";
+        } elseif ($turno === '2') {
+            // Turno 2: 18:00 do dia até 06:00 do dia seguinte
+            $where_clauses[] = "m.data_movimentacao >= :data_inicio AND m.data_movimentacao < :data_fim";
+            $params[':data_inicio'] = "$data_filtro 18:00:00";
+            $data_fim = date('Y-m-d', strtotime("$data_filtro +1 day"));
+            $params[':data_fim'] = "$data_fim 06:00:00";
+        } else {
+            // Dia inteiro
+            $where_clauses[] = "DATE(m.data_movimentacao) = :data";
+            $params[':data'] = $data_filtro;
+        }
+    }
+    
+    $where_sql = '';
+    if (!empty($where_clauses)) {
+        $where_sql = "WHERE " . implode(" AND ", $where_clauses);
+    }
+    
+    // Contar total de registros para paginação
+    $sql_count = "SELECT COUNT(*) as total FROM estoque_movimentacao m $where_sql";
+    $stmt_count = $pdo->prepare($sql_count);
+    foreach ($params as $key => $val) {
+        $stmt_count->bindValue($key, $val);
+    }
+    $stmt_count->execute();
+    $total_registros = intval($stmt_count->fetch(PDO::FETCH_ASSOC)['total']);
+    $total_paginas = ceil($total_registros / $limite);
     
     $sql = "SELECT 
                 m.id_movimentacao,
@@ -219,11 +266,16 @@ function listarHistorico() {
                 i.nome as nome_item
             FROM estoque_movimentacao m
             INNER JOIN estoque_item i ON m.id_item = i.id_item
+            $where_sql
             ORDER BY m.data_movimentacao DESC
-            LIMIT :limite";
+            LIMIT :limite OFFSET :offset";
     
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':limite', $limite, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+    foreach ($params as $key => $val) {
+        $stmt->bindValue($key, $val);
+    }
     $stmt->execute();
     $movimentacoes = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
@@ -234,7 +286,15 @@ function listarHistorico() {
         $mov['quantidade_formatada'] = ($mov['tipo'] === 'entrada' ? '+' : '-') . $mov['quantidade'];
     }
     
-    echo json_encode(['success' => true, 'data' => $movimentacoes]);
+    echo json_encode([
+        'success' => true, 
+        'data' => $movimentacoes,
+        'paginacao' => [
+            'pagina_atual' => $pagina,
+            'total_paginas' => $total_paginas,
+            'total_registros' => $total_registros
+        ]
+    ]);
 }
 
 function obterResumo() {

@@ -60,7 +60,7 @@
                     Estoque
                 </h4>
                 <div class="mb-3">
-                    <input type="text" class="form-control" placeholder="🔍 Buscar item..." id="buscaRecepcao">
+                    <input type="text" class="form-control" placeholder="Buscar item..." id="buscaRecepcao">
                 </div>
                 <div class="table-responsive">
                     <table class="table table-hover mb-0">
@@ -90,7 +90,7 @@
                     Frigobar
                 </h4>
                 <div class="mb-3">
-                    <input type="text" class="form-control" placeholder="🔍 Buscar item..." id="buscaFrigobar">
+                    <input type="text" class="form-control" placeholder="Buscar item..." id="buscaFrigobar">
                 </div>
                 <div class="table-responsive">
                     <table class="table table-hover mb-0">

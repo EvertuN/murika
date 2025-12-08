@@ -2,6 +2,7 @@
 class EstoqueManager {
     constructor() {
         this.apiEndpoint = '/api/movimentacao';
+        this.paginaAtual = 1; // Default
         this.init();
     }
 
@@ -12,6 +13,7 @@ class EstoqueManager {
         this.carregarHistorico();
         this.setupFormMovimentacao();
         this.setupBusca();
+        this.setupFiltroHistorico(); // New setup
         this.setupTabs();
     }
 
@@ -49,6 +51,24 @@ class EstoqueManager {
         if (buscaFrigobar) {
             buscaFrigobar.addEventListener('input', (e) => {
                 this.filtrarTabela('tabelaFrigobar', e.target.value);
+            });
+        }
+    }
+
+    setupFiltroHistorico() {
+        const dataInput = document.getElementById('dataHistorico');
+        const turnoSelect = document.getElementById('turnoHistorico');
+
+        if (dataInput) {
+            dataInput.addEventListener('change', () => {
+                this.paginaAtual = 1; // Reset to page 1
+                this.carregarHistorico();
+            });
+        }
+        if (turnoSelect) {
+            turnoSelect.addEventListener('change', () => {
+                this.paginaAtual = 1; // Reset to page 1
+                this.carregarHistorico();
             });
         }
     }
@@ -163,17 +183,64 @@ class EstoqueManager {
         }).join('');
     }
 
-    carregarHistorico() {
-        fetchAPI(`${this.apiEndpoint}?acao=listar_historico&limite=50`)
+    carregarHistorico(pagina = null) {
+        if (pagina) {
+            this.paginaAtual = pagina;
+        }
+
+        const dataInput = document.getElementById('dataHistorico');
+        const turnoSelect = document.getElementById('turnoHistorico');
+        
+        let params = `acao=listar_historico&limite=10&pagina=${this.paginaAtual}`; // Limite de itens por página
+        
+        if (dataInput && dataInput.value) {
+            params += `&data=${dataInput.value}`;
+        }
+        if (turnoSelect && turnoSelect.value) {
+            params += `&turno=${turnoSelect.value}`;
+        }
+
+        fetchAPI(`${this.apiEndpoint}?${params}`)
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
                     this.renderizarHistorico(data.data);
+                    if (data.paginacao) {
+                        this.renderizarPaginacao(data.paginacao);
+                    }
                 }
             })
             .catch(error => {
                 console.error('Erro ao carregar histórico:', error);
             });
+    }
+
+    renderizarPaginacao(paginacao) {
+        const container = document.getElementById('paginacaoContainer');
+        const btnAnterior = document.getElementById('btnPaginaAnterior');
+        const btnProximo = document.getElementById('btnPaginaProximo');
+        const info = document.getElementById('infoPaginacao');
+
+        if (!container || !btnAnterior || !btnProximo || !info) return;
+
+        if (paginacao.total_paginas <= 1 && paginacao.total_registros === 0) {
+            container.style.display = 'none';
+            container.style.setProperty('display', 'none', 'important');
+            return;
+        }
+
+        container.style.display = 'flex';
+        container.style.removeProperty('display'); // Remove inline !important if set via JS previously
+
+        info.textContent = `Página ${paginacao.pagina_atual} de ${paginacao.total_paginas} (Total: ${paginacao.total_registros})`;
+
+        btnAnterior.disabled = paginacao.pagina_atual <= 1;
+        btnProximo.disabled = paginacao.pagina_atual >= paginacao.total_paginas;
+
+        // Clear previous listeners to avoid duplicates (naive approach)
+        // Better: store reference. For simplicity: replace element or direct onclick
+        btnAnterior.onclick = () => this.carregarHistorico(paginacao.pagina_atual - 1);
+        btnProximo.onclick = () => this.carregarHistorico(paginacao.pagina_atual + 1);
     }
 
     renderizarHistorico(movimentacoes) {
