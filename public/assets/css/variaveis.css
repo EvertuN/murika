@@ -15,6 +15,14 @@
     --badge-saida: #721c24;
     --badge-bg-saida: #f8d7da;
 
+    /* Status BADGE */
+    --badge-ok: #155724;
+    --badge-bg-ok: #d4edda;
+    --badge-baixo: #856404;
+    --badge-bg-baixo: #fff3cd;
+    --badge-quantidade: #004085;
+    --badge-bg-quantidade: #cce5ff;
+
     /*NavBar*/
     --navbar-primary: #ffffff;
     --navbar-secondary: rgba(255, 255, 255, 0.1);

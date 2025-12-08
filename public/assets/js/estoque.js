@@ -159,21 +159,21 @@ class EstoqueManager {
         const localValue = local === 'recepcao' ? '0' : '1';
 
         tbody.innerHTML = itens.map(item => {
-            const statusClass = item.status === 'OK' ? 'bg-success' : 'bg-warning';
+            const statusClass = item.status === 'OK' ? 'badge-status-ok' : 'badge-status-baixo';
             const statusText = item.status === 'OK' ? 'OK' : 'Baixo';
             
             return `
                 <tr class="item-row">
                     <td>${this.escapeHtml(item.nome)}</td>
-                    <td class="text-center"><span class="badge bg-primary">${item.quantidade_atual}</span></td>
+                    <td class="text-center"><span class="badge badge-quantidade">${item.quantidade_atual}</span></td>
                     <td class="text-center">${item.quantidade_minima}</td>
                     <td class="text-center"><span class="badge ${statusClass}">${statusText}</span></td>
                     <td class="text-center">
-                        <div class="btn-group btn-group-sm">
-                            <button class="btn btn-success" title="Entrada" onclick="estoqueManager.abrirModalMovimentacao(${item.id_item}, 'entrada', '${localValue}')">
+                        <div class="btn-group-rounded">
+                            <button class="btn-action btn-action-entrada" title="Entrada" onclick="estoqueManager.abrirModalMovimentacao(${item.id_item}, 'entrada', '${localValue}')">
                                 <i class="fas fa-plus"></i>
                             </button>
-                            <button class="btn btn-danger" title="Saída" onclick="estoqueManager.abrirModalMovimentacao(${item.id_item}, 'saida', '${localValue}')">
+                            <button class="btn-action btn-action-saida" title="Saída" onclick="estoqueManager.abrirModalMovimentacao(${item.id_item}, 'saida', '${localValue}')">
                                 <i class="fas fa-minus"></i>
                             </button>
                         </div>
