@@ -24,7 +24,7 @@ class CoreFactory {
         ],
         
         'categoria' => [
-            'table' => 'estoque_categoria',
+            'table' => 'estoque_categorias_item',
             'primaryKey' => 'id_categoria',
             'fields' => ['nome_categoria'],
             'requiredFields' => ['nome_categoria'],
@@ -62,7 +62,7 @@ class CoreFactory {
             'requireAdmin' => true,
             'relationships' => [
                 'nome_categoria' => [
-                    'table' => 'estoque_categoria',
+                    'table' => 'estoque_categorias_item',
                     'foreignKey' => 'id_categoria',
                     'primaryKey' => 'id_categoria',
                     'displayField' => 'nome_categoria',
