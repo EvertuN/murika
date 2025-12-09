@@ -1,6 +1,6 @@
-<?php
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../config/auth.php';
+require_once __DIR__ . '/../core/Logger.php'; // Adicionar Logger
 
 // Check if this is an API call or direct access
 $isApi = isset($_GET['acao']) || isset($_POST['acao']);
@@ -69,6 +69,14 @@ function renderizarRelatorio() {
             $nome_funcionario = $funcionario['nome'];
         }
     }
+        // Log da geração do relatório (Logs 2.0)
+        require_once __DIR__ . '/../core/Logger.php';
+        Logger::system($pdo, 'REPORT', 'GENERATE', 'relatorios', null, [
+            'msg' => 'Relatório de Estoque Gerado',
+            'turno' => $turno,
+            'data_filtro' => $data_filtro,
+            'funcionario' => $nome_funcionario
+        ]);
     
     // Calculate shift time range
     if ($turno === '1') {

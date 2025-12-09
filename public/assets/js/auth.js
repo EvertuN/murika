@@ -68,31 +68,80 @@ function setupAlterarSenha() {
     });
 }
 
+// Variável global para filtro
+let currentLogFilter = 'all';
+
+// Filtrar logs
+function filtrarLogsAdmin(type, btn) {
+    currentLogFilter = type;
+    
+    // Atualizar UI dos botões
+    const buttons = btn.parentElement.querySelectorAll('button');
+    buttons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    
+    // Recarregar logs
+    carregarLogsAdmin(1);
+}
+
 // Carregar logs do admin
 function carregarLogsAdmin(page = 1) {
-    fetchAPI(`/api/logs?acao=listar_admin&page=${page}`)
-        .then(response => response.json())
+    const url = `/api/sistema_logs?acao=listar_admin&page=${page}&type=${currentLogFilter}`;
+    console.log('Carregando logs:', url);
+    
+    fetchAPI(url)
+        .then(response => {
+            // Verificar se a resposta é OK
+            if (!response.ok) {
+                return response.text().then(text => {
+                    throw new Error(`Erro API (${response.status}): ${text.substring(0, 200)}`);
+                });
+            }
+            
+            // Tentar ler como texto primeiro para debug se falhar o JSON
+            return response.text().then(text => {
+                try {
+                    return JSON.parse(text);
+                } catch (e) {
+                    console.error('Falha ao parsear JSON. Resposta recebida:', text);
+                    throw new Error('Resposta inválida do servidor (não é JSON)');
+                }
+            });
+        })
         .then(data => {
             const tbody = document.getElementById('tabelaLogsAdmin');
             if (!tbody) return;
 
-            if (data.success && data.data.length > 0) {
+            if (data.success && data.data && data.data.length > 0) {
                 tbody.innerHTML = data.data.map(log => {
                     const dataFormatada = new Date(log.created_at).toLocaleString('pt-BR');
-                    const acaoBadge = `<span class="badge bg-info">${log.action}</span>`;
+                    
+                    let acaoBadgeClass = 'bg-info';
+                    if (log.action.includes('DELETE')) acaoBadgeClass = 'bg-danger';
+                    else if (log.action.includes('CREATE')) acaoBadgeClass = 'bg-success';
+                    else if (log.action.includes('UPDATE')) acaoBadgeClass = 'bg-warning text-dark';
+                    else if (log.action === 'LOGIN_SUCCESS') acaoBadgeClass = 'bg-primary';
+                    else if (log.action === 'LOGIN_FAIL') acaoBadgeClass = 'bg-danger';
+                    
+                    const acaoBadge = `<span class="badge ${acaoBadgeClass}">${log.action}</span>`;
                     const usuarioNome = log.user_name || 'Sistema/Visitante';
-                    const detalhes = log.details ? JSON.parse(log.details) : {};
-                    const detalhesTexto = Object.keys(detalhes).length > 0 
-                        ? JSON.stringify(detalhes, null, 2) 
-                        : '-';
+                    
+                    // Tentar parsear se for JSON, senão usa string pura
+                    let detalhesTexto = log.details || '-';
+                    try {
+                        const detalhesJson = JSON.parse(log.details);
+                        detalhesTexto = JSON.stringify(detalhesJson, null, 2); // Pretty print
+                    } catch (e) {
+                        // Não é JSON, manter texto normal
+                    }
 
                     return `
                         <tr>
                             <td>${dataFormatada}</td>
                             <td>${usuarioNome}</td>
                             <td>${acaoBadge}</td>
+                            <td><small class="text-muted text-break">${detalhesTexto}</small></td>
                             <td>${log.ip}</td>
-                            <td><small class="text-muted">${detalhesTexto}</small></td>
                         </tr>
                     `;
                 }).join('');
@@ -112,27 +161,27 @@ function carregarLogsAdmin(page = 1) {
                     paginacao.innerHTML = pagHTML;
                 }
             } else {
-                tbody.innerHTML = '<tr><td colspan="5" class="text-center">Nenhum log encontrado</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center">Nenhum log encontrado para este filtro</td></tr>';
             }
         })
         .catch(error => {
             console.error('Erro ao carregar logs:', error);
             const tbody = document.getElementById('tabelaLogsAdmin');
             if (tbody) {
-                tbody.innerHTML = '<tr><td colspan="5" class="text-center text-danger">Erro ao carregar logs</td></tr>';
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center text-danger">Erro: ${error.message}</td></tr>`;
             }
         });
 }
 
 // Carregar logs do usuário
 function carregarLogsUsuario() {
-    fetchAPI('/api/logs?acao=listar_usuario')
+    fetchAPI('/api/sistema_logs?acao=listar_usuario')
         .then(response => response.json())
         .then(data => {
             const tbody = document.getElementById('tabelaLogsUsuario');
             if (!tbody) return;
 
-            if (data.success && data.data.length > 0) {
+            if (data.success && data.data && data.data.length > 0) {
                 tbody.innerHTML = data.data.map(log => {
                     const dataFormatada = new Date(log.created_at).toLocaleString('pt-BR');
                     let acaoBadge = '';
@@ -165,6 +214,55 @@ function carregarLogsUsuario() {
         });
 }
 
+// Helper para renderizar detalhes do log
+function renderDetails(detailsRaw) {
+    if (!detailsRaw) return '-';
+    
+    try {
+        const data = __parseJSON(detailsRaw);
+        if (!data) return detailsRaw;
+        
+        if (typeof data === 'string') return data;
+        
+        // Envelope msg
+        if (data.msg && Object.keys(data).length === 1) return data.msg;
+
+        // Diff (Update)
+        if (data.diff) {
+            if (Object.keys(data.diff).length === 0) return '<em class="text-muted">Sem alterações</em>';
+            
+            let html = '<div style="font-size: 0.85em;">';
+            if (data.name) html += `<strong>${data.name}</strong><br>`;
+            
+            html += '<ul class="list-unstyled mb-0">';
+            for (const [field, changes] of Object.entries(data.diff)) {
+                html += `<li><span class="fw-bold">${field}:</span> <span class="text-danger text-decoration-line-through">${changes.from}</span> &rarr; <span class="text-success">${changes.to}</span></li>`;
+            }
+            html += '</ul></div>';
+            return html;
+        }
+
+        // Relatórios
+        if (data.turno || data.data_filtro) {
+            let parts = [];
+            if (data.msg) parts.push(`<strong>${data.msg}</strong>`);
+            if (data.turno) parts.push(`Turno: ${data.turno}`);
+            if (data.data_filtro) parts.push(`Data: ${data.data_filtro}`);
+            if (data.funcionario) parts.push(`Func: ${data.funcionario}`);
+            return parts.join('<br>');
+        }
+        
+        // Fallback
+        return '<pre class="m-0 text-muted" style="font-size:0.7em; white-space: pre-wrap;">' + JSON.stringify(data, null, 2) + '</pre>';
+
+    } catch (e) {
+        return detailsRaw;
+    }
+}
+
+function __parseJSON(str) {
+    try { return JSON.parse(str); } catch (e) { return null; }
+}
+
 // Variável global para acesso à instância
 let usuarioCORE;
-

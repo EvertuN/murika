@@ -83,8 +83,16 @@ function autenticar($usuario, $senha) {
             $_SESSION['tipo'] = $user['tipo'];
             $_SESSION['ultimo_uso'] = time();
             
+            // Log de sucesso (passando DB connection explicitamente se necessário, mas Logger usa estático com session se não passar connection, aqui temos $pdo)
+            require_once __DIR__ . '/../core/Logger.php';
+            Logger::log($pdo, 'LOGIN_SUCCESS', "Login realizado com sucesso", $user['id']);
+            
             return true;
         }
+        
+        // Log de falha
+        require_once __DIR__ . '/../core/Logger.php';
+        Logger::log($pdo, 'LOGIN_FAIL', "Tentativa falha para usuário: $usuario", null); // Loga tentativa sem ID
         
         return false;
     } catch (Exception $e) {
@@ -96,6 +104,18 @@ function autenticar($usuario, $senha) {
  * Desautentica o usuário
  */
 function logout() {
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    
+    // Log logout
+    if (isset($_SESSION['id'])) {
+        $db = new Database();
+        $pdo = $db->connect();
+        require_once __DIR__ . '/../core/Logger.php';
+        Logger::log($pdo, 'LOGOUT', "Logout realizado pelo usuário", $_SESSION['id']);
+    }
+
     $_SESSION = array();
     if (isset($_COOKIE[session_name()])) {
         setcookie(session_name(), '', time() - 3600, '/');

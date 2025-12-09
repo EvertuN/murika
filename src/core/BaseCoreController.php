@@ -6,7 +6,7 @@
  * Suporta validação, relacionamentos, hooks e tratamento de erros padronizado.
  * 
  * @author Everton Almeida / Sistema Murika
- * @version 1.0.1
+ * @version 1.0.3
  */
 
 class BaseCoreController {
@@ -19,20 +19,19 @@ class BaseCoreController {
     protected $orderBy;
     protected $requireAuth;
     protected $requireAdmin;
+    protected $logField;
+    
+    // Armazena dados temporários para logs (ex: nome antes de deletar)
+    protected $tempLogData = [];
+    
+    // Armazena dados antigos para diff (novo Logs 2.0)
+    protected $oldData = [];
     
     /**
      * Construtor
      * 
      * @param PDO $db Conexão com banco de dados
      * @param array $config Configuração do controller
-     *   - table: string (obrigatório) - Nome da tabela
-     *   - primaryKey: string (obrigatório) - Nome da chave primária
-     *   - fields: array (obrigatório) - Lista de campos da tabela
-     *   - requiredFields: array (opcional) - Campos obrigatórios
-     *   - relationships: array (opcional) - Relacionamentos para JOIN
-     *   - orderBy: string (opcional) - Campo para ordenação padrão
-     *   - requireAuth: bool (opcional) - Requer autenticação (padrão: false)
-     *   - requireAdmin: bool (opcional) - Requer admin para editar/deletar (padrão: true)
      */
     public function __construct($db, array $config) {
         $this->db = $db;
@@ -44,11 +43,16 @@ class BaseCoreController {
         $this->orderBy = $config['orderBy'] ?? $this->primaryKey;
         $this->requireAuth = $config['requireAuth'] ?? false;
         $this->requireAdmin = $config['requireAdmin'] ?? true;
+        // Se logField não for definido, tenta usar o primeiro campo ou 'nome' se existir
+        $this->logField = $config['logField'] ?? (in_array('nome', $this->fields) ? 'nome' : ($this->fields[0] ?? null));
         
         // Validar configuração mínima
         if (!$this->table || empty($this->fields)) {
             throw new Exception('Configuração inválida: table e fields são obrigatórios');
         }
+        
+        // Carregar Logger
+        require_once __DIR__ . '/Logger.php';
     }
     
     /**
@@ -194,6 +198,15 @@ class BaseCoreController {
         if (!$validation['valid']) {
             return $this->jsonResponse(false, $validation['message']);
         }
+
+        // SNAPSHOT: Buscar dados atuais para diff
+        try {
+            $stmtOld = $this->db->prepare("SELECT * FROM {$this->table} WHERE {$this->primaryKey} = :id");
+            $stmtOld->execute([':id' => $id]);
+            $this->oldData = $stmtOld->fetch(PDO::FETCH_ASSOC) ?: [];
+        } catch (Exception $e) {
+            // Se falhar o snapshot, segue o fluxo
+        }
         
         // Hook: antes de atualizar
         if (!$this->beforeUpdate($id, $data)) {
@@ -333,7 +346,8 @@ class BaseCoreController {
      * Hook: Depois de criar
      */
     protected function afterCreate($id, $data) {
-        // Implementar em subclasses se necessário
+        $name = isset($this->logField) && isset($data[$this->logField]) ? $data[$this->logField] : '';
+        Logger::logCrud($this->db, $this->table, 'CREATE', $id, $name);
     }
     
     /**
@@ -348,7 +362,21 @@ class BaseCoreController {
      * Hook: Depois de atualizar
      */
     protected function afterUpdate($id, $data) {
-        // Implementar em subclasses se necessário
+        $name = isset($this->logField) && isset($data[$this->logField]) ? $data[$this->logField] : '';
+        
+        // Calcular diff
+        $diff = [];
+        foreach ($data as $key => $value) {
+            // Compara valor antigo com novo (apenas se existir no oldData)
+            if (isset($this->oldData[$key]) && $this->oldData[$key] != $value) {
+                $diff[$key] = [
+                    'from' => $this->oldData[$key],
+                    'to' => $value
+                ];
+            }
+        }
+        
+        Logger::logCrud($this->db, $this->table, 'UPDATE', $id, $name, $diff);
     }
     
     /**
@@ -356,6 +384,19 @@ class BaseCoreController {
      * @return bool true para continuar, false para cancelar
      */
     protected function beforeDelete($id) {
+        // Tentar buscar o nome antes de deletar para o log
+        if ($this->logField) {
+            try {
+                $stmt = $this->db->prepare("SELECT {$this->logField} FROM {$this->table} WHERE {$this->primaryKey} = :id");
+                $stmt->execute([':id' => $id]);
+                $res = $stmt->fetch(PDO::FETCH_ASSOC);
+                if ($res) {
+                    $this->tempLogData['deleted_name'] = $res[$this->logField];
+                }
+            } catch (Exception $e) {
+                // Ignore errors here
+            }
+        }
         return true;
     }
     
@@ -363,7 +404,8 @@ class BaseCoreController {
      * Hook: Depois de deletar
      */
     protected function afterDelete($id) {
-        // Implementar em subclasses se necessário
+        $name = $this->tempLogData['deleted_name'] ?? '';
+        Logger::logCrud($this->db, $this->table, 'DELETE', $id, $name);
     }
     
     /**

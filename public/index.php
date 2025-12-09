@@ -1,5 +1,6 @@
 <?php
 require_once "../env.php";
+
 require_once "../src/config/auth.php";
 
 $url = isset($_GET['url']) ? $_GET['url'] : '';
@@ -30,7 +31,7 @@ if ($primeiraParte === 'api') {
     }
     
     // Validar endpoint da API
-    $apisPermitidas = ['item', 'categoria', 'movimentacao', 'usuario', 'logs', 'relatorio', 'funcionarios', 'cargo'];
+    $apisPermitidas = ['item', 'categoria', 'movimentacao', 'usuario', 'sistema_logs', 'relatorio', 'funcionarios', 'cargo'];
     
     if (!in_array($apiEndpoint, $apisPermitidas)) {
         http_response_code(404);
@@ -55,7 +56,7 @@ if ($primeiraParte === 'api') {
         case 'usuario':
             require_once $controllerPath . 'auth_usuario_controller.php';
             break;
-        case 'logs':
+        case 'sistema_logs':
             require_once $controllerPath . 'auth_logs_controller.php';
             break;
         case 'relatorio':
