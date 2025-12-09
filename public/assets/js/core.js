@@ -7,9 +7,21 @@ class COREManager {
         this.mensagemListaId = config.mensagemListaId || 'mensagem-lista';
         this.tabelaId = config.tabelaId;
         this.modalEditId = config.modalEditId;
-        this.selectCategoriaId = config.selectCategoriaId;
-        this.selectCategoriaEditId = config.selectCategoriaEditId;
         this.isAdmin = config.isAdmin || false;
+        
+        // Sistema genérico de relacionamentos
+        this.relationships = config.relationships || [];
+        
+        // Compatibilidade com código legado (selectCategoriaId)
+        if (config.selectCategoriaId) {
+            this.relationships.push({
+                endpoint: '/api/categoria',
+                selectId: config.selectCategoriaId,
+                selectEditId: config.selectCategoriaEditId,
+                valueField: 'id_categoria',
+                labelField: 'nome_categoria'
+            });
+        }
 
         this.init();
     }
@@ -18,10 +30,53 @@ class COREManager {
         this.setupFormCadastro();
         this.setupFormEdit();
         this.carregarDados();
-
-        if (this.selectCategoriaId) {
-            this.carregarCategoriasSelect();
+        this.carregarRelacionamentos();
+    }
+    
+    carregarRelacionamentos() {
+        if (!this.relationships || this.relationships.length === 0) return;
+        
+        this.relationships.forEach(rel => {
+            fetchAPI(`${rel.endpoint}?acao=listar`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        this.popularSelects(data.data, rel);
+                    }
+                })
+                .catch(err => console.error(`Erro ao carregar relacionamento ${rel.endpoint}:`, err));
+        });
+    }
+    
+    popularSelects(data, rel) {
+        const options = data.map(item => 
+            `<option value="${item[rel.valueField]}">${item[rel.labelField]}</option>`
+        ).join('');
+        
+        if (rel.selectId) {
+            const select = document.getElementById(rel.selectId);
+            if (select) select.innerHTML = '<option value="">Selecione...</option>' + options;
+            
+            // Observer para recarregar quando o elemento for inserido no DOM
+            this.setupObserver(rel.selectId, options);
         }
+        
+        if (rel.selectEditId) {
+            const selectEdit = document.getElementById(rel.selectEditId);
+            if (selectEdit) selectEdit.innerHTML = '<option value="">Selecione...</option>' + options;
+        }
+    }
+    
+    setupObserver(elementId, options) {
+        const observer = new MutationObserver(() => {
+            const select = document.getElementById(elementId);
+            if (select && select.innerHTML.indexOf('option') === -1) {
+                select.innerHTML = '<option value="">Selecione...</option>' + options;
+                // Observer pode continuar ativo se o elemento for removido e recriado
+            }
+        });
+        
+        observer.observe(document.body, {childList: true, subtree: true});
     }
 
     setupFormCadastro() {

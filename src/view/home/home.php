@@ -192,11 +192,18 @@
                 formEditId: 'formEditarItem',
                 tabelaId: 'tabelaItens',
                 modalEditId: 'modalEditarItem',
-                selectCategoriaId: 'selectCategoria',
-                selectCategoriaEditId: 'editSelectCategoria',
                 mensagemCadastroId: 'mensagem-item',
                 mensagemListaId: 'mensagem-lista-item',
-                isAdmin: <?php echo isAdmin() ? 'true' : 'false'; ?>
+                isAdmin: <?php echo isAdmin() ? 'true' : 'false'; ?>,
+                relationships: [
+                    {
+                        endpoint: '/api/categoria',
+                        selectId: 'selectCategoria',
+                        selectEditId: 'editSelectCategoria',
+                        valueField: 'id_categoria',
+                        labelField: 'nome_categoria'
+                    }
+                ]
             });
 
             // Inicializa o CRUD de Funcionário
@@ -206,11 +213,18 @@
                 formEditId: 'formEditarFuncionario',
                 tabelaId: 'tabelaFuncionarios',
                 modalEditId: 'modalEditarFuncionario',
-                selectCargoId: 'selectCargo',
-                selectCargoEditId: 'editSelectCargo',
                 mensagemCadastroId: 'mensagem-funcionario',
                 mensagemListaId: 'mensagem-lista-funcionario',
-                isAdmin: <?php echo isAdmin() ? 'true' : 'false'; ?>
+                isAdmin: <?php echo isAdmin() ? 'true' : 'false'; ?>,
+                relationships: [
+                    {
+                        endpoint: '/api/cargo',
+                        selectId: 'selectCargo',
+                        selectEditId: 'editSelectCargo',
+                        valueField: 'id_cargo',
+                        labelField: 'cargo'
+                    }
+                ]
             });
 
             // Inicializa o CRUD de Cargo
