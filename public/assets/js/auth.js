@@ -218,11 +218,15 @@ function carregarLogsUsuario() {
 function renderDetails(detailsRaw) {
     if (!detailsRaw) return '-';
     
+    // Se já for objeto (alguns drivers PDO retornam JSON parseado), use direto
+    let data = detailsRaw;
+    if (typeof detailsRaw === 'string') {
+        data = __parseJSON(detailsRaw);
+        if (!data) return detailsRaw; // String não JSON
+    }
+    
     try {
-        const data = __parseJSON(detailsRaw);
-        if (!data) return detailsRaw;
-        
-        if (typeof data === 'string') return data;
+        if (typeof data === 'string') return data; // Se ainda for string simples
         
         // Envelope msg
         if (data.msg && Object.keys(data).length === 1) return data.msg;
@@ -256,7 +260,7 @@ function renderDetails(detailsRaw) {
         return '<pre class="m-0 text-muted" style="font-size:0.7em; white-space: pre-wrap;">' + JSON.stringify(data, null, 2) + '</pre>';
 
     } catch (e) {
-        return detailsRaw;
+        return typeof detailsRaw === 'string' ? detailsRaw : JSON.stringify(detailsRaw);
     }
 }
 

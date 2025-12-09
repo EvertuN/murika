@@ -157,6 +157,7 @@
         <?php require_once __DIR__ . '/../auth/auth_usuario_logs.php'; ?>
         <?php if (isAdmin()): ?>
             <?php require_once __DIR__ . '/../auth/auth_admin_usuarios.php'; ?>
+            <?php require_once __DIR__ . '/../auth/auth_admin_logs.php'; ?>
         <?php endif; ?>
 
         <!-- Seções de Funcionarios -->
