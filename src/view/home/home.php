@@ -170,6 +170,12 @@
     <script src="<?php echo BASE_URL; ?>/assets/js/core.js"></script>
     <script src="<?php echo BASE_URL; ?>/assets/js/auth.js"></script>
     <script src="<?php echo BASE_URL; ?>/assets/js/funcionarios.js"></script>
+    
+    <!-- Timer de Turno (Sincronizado) -->
+    <script>
+        window.SERVER_TIME_NOW = <?php echo time(); ?>;
+    </script>
+    <script src="<?php echo BASE_URL; ?>/assets/js/turnos.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Inicializa o CRUD de Categoria

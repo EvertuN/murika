@@ -1,4 +1,7 @@
 <?php
+// Configurar fuso horário do sistema
+date_default_timezone_set('America/Porto_Velho');
+
 $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
 $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
 $basePath = rtrim(dirname($_SERVER['SCRIPT_NAME'] ?? '/'), '/\\');
