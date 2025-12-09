@@ -1,3 +1,12 @@
+# Segurança: Desabilitar listagem de diretórios
+Options -Indexes
+ServerSignature Off
+
+# Bloquear acesso a arquivos ocultos (.env, .git, etc)
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
 # Ativar reescrita
 RewriteEngine On
 
