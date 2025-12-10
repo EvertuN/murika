@@ -47,10 +47,10 @@ class UsuarioCORE extends COREManager {
                 <td>${tipoBadge}</td>
                 <td class="text-center">${ativoBadge}</td>
                 <td>
-                    <button class="btn btn-sm btn-dark" onclick="abrirEditarUsuario('${item.id}', '${item.nome.replace(/'/g, "&#39;")}', '${item.usuario.replace(/'/g, "&#39;")}', '${item.tipo}', ${item.ativo}, '${item.id_cargo || ''}')">
+                    <button class="btn btn-sm editbtn" onclick="abrirEditarUsuario('${item.id}', '${item.nome.replace(/'/g, "&#39;")}', '${item.usuario.replace(/'/g, "&#39;")}', '${item.tipo}', ${item.ativo}, '${item.id_cargo || ''}')">
                         <i class="fas fa-edit"></i> Editar
                     </button>
-                    <button class="btn btn-sm btn-danger" onclick="usuarioCORE.deletar('${item.id}', 'Deseja realmente deletar o usuário ${item.nome.replace(/'/g, "&#39;")}?')">
+                    <button class="btn btn-sm deletebtn" onclick="usuarioCORE.deletar('${item.id}', 'Deseja realmente deletar o usuário ${item.nome.replace(/'/g, "&#39;")}?')">
                         <i class="fas fa-trash"></i> Deletar
                     </button>
                 </td>

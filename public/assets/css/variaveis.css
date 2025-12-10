@@ -14,6 +14,14 @@
     --badge-bg-entrada: #d4edda;
     --badge-saida: #721c24;
     --badge-bg-saida: #f8d7da;
+    
+    /* Botões das Lista */
+    /* --btn-editar: #006eff; */
+    --btn-editar: #005B8F;
+    --btn-bg-editar: #ffffff;
+
+    --btn-deletar: #dc3545;
+    --btn-bg-deletar: #ffffff;
 
     /* Status BADGE */
     --badge-ok: #155724;

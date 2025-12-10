@@ -377,3 +377,32 @@ body {
     padding: 0.4rem 0.8rem;
     border-radius: 18px;
 }
+
+/* Botões 'XÔ' BOOTSTRAP */
+.editbtn {
+    background-color: var(--btn-bg-editar);
+    color: var(--btn-editar);
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: var(--btn-editar);
+    border-style: solid;
+}
+
+.editbtn:hover {
+    background-color: var(--btn-editar);
+    color: var(--btn-bg-editar);
+}
+
+.deletebtn {
+    background-color: var(--btn-bg-deletar);
+    color: var(--btn-deletar);
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: var(--btn-deletar);
+    border-style: solid;
+}
+
+.deletebtn:hover {
+    background-color: var(--btn-deletar);
+    color: var(--btn-bg-deletar);
+}

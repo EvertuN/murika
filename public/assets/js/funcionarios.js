@@ -9,10 +9,10 @@ class FuncionarioCORE extends COREManager {
                 <td>${item.cargo || 'Sem cargo'}</td>
                 <td>
                     ${this.isAdmin ? `
-                    <button class="btn btn-sm btn-dark" onclick="abrirEditarFuncionario(${item.id_funcionario}, '${item.nome.replace(/'/g, "&#39;")}', ${item.id_cargo})">
+                    <button class="btn btn-sm editbtn" onclick="abrirEditarFuncionario(${item.id_funcionario}, '${item.nome.replace(/'/g, "&#39;")}', ${item.id_cargo})">
                         <i class="fas fa-edit"></i> Editar
                     </button>
-                    <button class="btn btn-sm btn-danger" onclick="funcionarioCORE.deletar(${item.id_funcionario})">
+                    <button class="btn btn-sm deletebtn" onclick="funcionarioCORE.deletar(${item.id_funcionario})">
                         <i class="fas fa-trash"></i> Deletar
                     </button>
                     ` : ''}
@@ -35,10 +35,10 @@ class CargoCORE extends COREManager {
                 <td>${item.cargo}</td>
                 <td>
                     ${this.isAdmin ? `
-                    <button class="btn btn-sm btn-dark" onclick="editarCargo(${item.id_cargo}, '${item.cargo.replace(/'/g, "&#39;")}')">
+                    <button class="btn btn-sm editbtn" onclick="editarCargo(${item.id_cargo}, '${item.cargo.replace(/'/g, "&#39;")}')">
                         <i class="fas fa-edit"></i> Editar
                     </button>
-                    <button class="btn btn-sm btn-danger" onclick="cargoCORE.deletar(${item.id_cargo})">
+                    <button class="btn btn-sm deletebtn" onclick="cargoCORE.deletar(${item.id_cargo})">
                         <i class="fas fa-trash"></i> Deletar
                     </button>
                     ` : ''}
