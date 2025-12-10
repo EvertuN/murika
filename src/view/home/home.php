@@ -29,7 +29,7 @@
                                 <i class="fas fa-box-open"></i> Estoque do Dia
                             </a>
                         </li>
-                        <li>
+                        <li> 
                             <a class="dropdown-item" href="#" data-section="historico">
                                 <i class="fas fa-history"></i> Histórico
                             </a>
