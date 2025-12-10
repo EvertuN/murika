@@ -104,7 +104,6 @@ if (!in_array($url, $rotasPublicas)) {
 // Roteamento
 switch ($url) {
     case '':
-    case 'home':
         require_once "../src/config/database.php";
         require_once "../src/config/auth.php";
         require_once "../src/view/home/home.php";
