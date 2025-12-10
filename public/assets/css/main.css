@@ -406,3 +406,11 @@ body {
     background-color: var(--btn-deletar);
     color: var(--btn-bg-deletar);
 }
+
+/* Dropdown Hover on Desktop */
+@media (min-width: 992px) {
+    .navbar-nav .dropdown:hover .dropdown-menu {
+        display: block;
+        margin-top: 0;
+    }
+}
