@@ -20,7 +20,7 @@ function startShiftTimer() {
     const clientTimeMs = new Date().getTime();
     const timeOffset = clientTimeMs - serverTimeMs;
 
-    console.log('⏰ Shift Timer Iniciado. Offset cliente-servidor:', timeOffset, 'ms');
+    // console.log('⏰ Shift Timer Iniciado. Offset cliente-servidor:', timeOffset, 'ms');
 
     const SHIFT_CHANGES = [6, 18]; 
     const WARNING_MINUTES = 5; // Aviso 5 min antes
@@ -38,6 +38,15 @@ function startShiftTimer() {
         // Vamos calcular a hora em PV baseada no UTC
         const pvOffset = -4; 
         const pvHours = (now.getUTCHours() + pvOffset + 24) % 24;
+        const pvMinutes = now.getUTCMinutes();
+
+        // VALIDAÇÃO CRÍTICA: Se já passou do horário (ex: 18:00 ou 06:00)
+        // Se for hora de turno e minuto 0, derruba imediatamente.
+        if (SHIFT_CHANGES.includes(pvHours) && pvMinutes < 2) {
+             console.warn('🕒 Fim de turno (Hora exata)! Realizando logout...');
+             window.location.href = '/logout?msg=turno_encerrado';
+             return;
+        }
         
         let nextShiftHour = SHIFT_CHANGES.find(h => h > pvHours);
         if (!nextShiftHour) {
