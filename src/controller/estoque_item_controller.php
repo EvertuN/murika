@@ -88,6 +88,35 @@ class ItemCoreController extends BaseCoreController {
             error_log("Erro ao gerenciar frigobar para item $id: " . $e->getMessage());
         }
     }
+
+    /**
+     * Sobrescreve method read para incluir quantidades mínimas
+     */
+    protected function read() {
+        try {
+            $sql = "SELECT 
+                        i.id_item, 
+                        i.nome, 
+                        i.controla_frigobar,
+                        i.id_categoria, 
+                        c.nome_categoria,
+                        COALESCE(er.quantidade_minima, 10) as min_recepcao,
+                        COALESCE(ef.quantidade_minima, 10) as min_frigobar
+                    FROM {$this->table} i
+                    LEFT JOIN estoque_categorias_item c ON i.id_categoria = c.id_categoria
+                    LEFT JOIN estoque_quantidade er ON i.id_item = er.id_item AND er.local = 'recepcao'
+                    LEFT JOIN estoque_quantidade ef ON i.id_item = ef.id_item AND ef.local = 'frigobar'
+                    ORDER BY i.nome";
+            
+            $stmt = $this->db->query($sql);
+            $data = $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
+            
+            return $this->jsonResponse(true, '', ['data' => $data]);
+            
+        } catch (PDOException $e) {
+            return $this->jsonResponse(false, 'Erro ao listar: ' . $e->getMessage());
+        }
+    }
 }
 
 // Conectar ao banco

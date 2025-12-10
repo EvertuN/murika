@@ -60,6 +60,8 @@
                             <th>ID</th>
                             <th>Nome</th>
                             <th>Categoria</th>
+                            <th class="text-center">Mín Rec.</th>
+                            <th class="text-center">Mín Frig.</th>
                             <th class="text-center">Frigobar</th>
                             <th>Ações</th>
                         </tr>

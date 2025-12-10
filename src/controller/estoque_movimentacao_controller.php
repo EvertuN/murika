@@ -22,6 +22,9 @@ switch($acao) {
     case 'listar_itens_por_local':
         listarItensPorLocal();
         break;
+    case 'atualizar_minimo':
+        atualizarMinimo();
+        break;
     default:
         echo json_encode(['success' => false, 'message' => 'Ação inválida']);
 }
@@ -372,4 +375,56 @@ function listarItensPorLocal() {
     $itens = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     echo json_encode(['success' => true, 'data' => $itens]);
+}
+
+function atualizarMinimo() {
+    $db = new Database();
+    $pdo = $db->connect();
+    
+    try {
+        if (!isAuthenticated()) {
+            throw new Exception('Usuário não autenticado');
+        }
+        
+        $id_item = intval($_POST['id_item'] ?? 0);
+        $local_input = $_POST['local'] ?? '';
+        $quantidade_minima = intval($_POST['minimo'] ?? -1);
+        
+        if ($id_item <= 0) {
+            throw new Exception('Item inválido');
+        }
+        
+        if ($quantidade_minima < 0) {
+            throw new Exception('Quantidade mínima deve ser maior ou igual a zero');
+        }
+        
+        // Determinar local
+        if ($local_input === '0' || $local_input === 'recepcao') {
+            $local = 'recepcao';
+        } elseif ($local_input === '1' || $local_input === 'frigobar') {
+            $local = 'frigobar';
+        } else {
+            throw new Exception('Local inválido');
+        }
+
+        // Verificar se já existe registro de estoque
+        $stmt = $pdo->prepare("SELECT COUNT(*) as total FROM estoque_quantidade WHERE id_item = :id AND local = :local");
+        $stmt->execute([':id' => $id_item, ':local' => $local]);
+        $exists = $stmt->fetch(PDO::FETCH_ASSOC)['total'] > 0;
+
+        if ($exists) {
+            // Update existing
+            $stmt = $pdo->prepare("UPDATE estoque_quantidade SET quantidade_minima = :min WHERE id_item = :id AND local = :local");
+            $stmt->execute([':min' => $quantidade_minima, ':id' => $id_item, ':local' => $local]);
+        } else {
+            // Insert new (should rarely happen for existing items but safe to handle)
+            $stmt = $pdo->prepare("INSERT INTO estoque_quantidade (id_item, local, quantidade_atual, quantidade_minima) VALUES (:id, :local, 0, :min)");
+            $stmt->execute([':id' => $id_item, ':local' => $local, ':min' => $quantidade_minima]);
+        }
+        
+        echo json_encode(['success' => true, 'message' => 'Quantidade mínima atualizada']);
+        
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+    }
 }

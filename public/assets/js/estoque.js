@@ -237,6 +237,75 @@ class EstoqueManager {
         }).join('');
     }
 
+    editarMinimo(element, idItem, localValue, valorAtual) {
+        // Prevent multiple edits
+        if (element.querySelector('input')) return;
+
+        const originalContent = element.innerHTML;
+        
+        element.innerHTML = `
+            <div class="input-group input-group-sm" style="width: 100px; margin: 0 auto;">
+                <input type="number" class="form-control" value="${valorAtual}" min="0" id="inputMin-${idItem}">
+                <button class="btn btn-success btn-sm" type="button" onclick="event.stopPropagation(); estoqueManager.salvarMinimo(${idItem}, '${localValue}', this.previousElementSibling.value, this.parentNode.parentNode)">
+                    <i class="fas fa-check"></i>
+                </button>
+            </div>
+        `;
+
+        const input = element.querySelector('input');
+        input.focus();
+        
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                this.salvarMinimo(idItem, localValue, input.value, element);
+            } else if (e.key === 'Escape') {
+                e.preventDefault();
+                element.innerHTML = originalContent; // Revert
+            }
+        });
+
+        // Click outside to cancel? simpler to just require check button or enter
+    }
+
+    salvarMinimo(idItem, localValue, novoValor, elementTd) {
+        const minimo = parseInt(novoValor);
+        if (isNaN(minimo) || minimo < 0) {
+            this.mostrarMensagem('Valor inválido', 'warning');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('acao', 'atualizar_minimo');
+        formData.append('id_item', idItem);
+        formData.append('local', localValue);
+        formData.append('minimo', minimo);
+
+        fetchAPI(this.apiEndpoint, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                this.mostrarMensagem('Mínimo atualizado!', 'success');
+                // Refresh data to update status badges etc.
+                if (localValue === '0' || localValue === 'recepcao') {
+                    this.carregarEstoqueRecepcao();
+                } else {
+                    this.carregarEstoqueFrigobar();
+                }
+            } else {
+                this.mostrarMensagem(data.message || 'Erro ao atualizar', 'danger');
+                // Could revert here if needed, but refresh handles it
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            this.mostrarMensagem('Erro de conexão', 'danger');
+        });
+    }
+
     carregarHistorico(pagina = null) {
         if (pagina) {
             this.paginaAtual = pagina;

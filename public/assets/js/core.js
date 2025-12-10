@@ -242,12 +242,33 @@ class CategoriaCORE extends COREManager {
 }
 
 class ItemCORE extends COREManager {
+    createMinimoCell(item, valor, local, label) {
+        const localValue = local === 'recepcao' ? '0' : '1';
+        
+        // Se for frigobar e item não controla frigobar, mostrar traço
+        if (local === 'frigobar' && item.controla_frigobar != 1) {
+            return '<td class="text-center text-muted">-</td>';
+        }
+
+        if (this.isAdmin) {
+            return `
+                <td class="text-center" style="cursor: pointer;" onclick="itemCORE.editarMinimo(this, ${item.id_item}, '${localValue}', ${valor})" title="Clique para editar ${label}">
+                    ${valor} <i class="fas fa-pencil-alt text-muted small ms-1" style="font-size: 0.7em;"></i>
+                </td>
+            `;
+        } else {
+            return `<td class="text-center">${valor}</td>`;
+        }
+    }
+
     criarLinhaTabela(item) {
         return `
             <tr>
                 <td>${item.id_item}</td>
                 <td>${item.nome}</td>
                 <td>${item.nome_categoria || 'Sem categoria'}</td>
+                ${this.createMinimoCell(item, item.min_recepcao, 'recepcao', 'Mín Recepção')}
+                ${this.createMinimoCell(item, item.min_frigobar, 'frigobar', 'Mín Frigobar')}
                 <td class="text-center">${item.controla_frigobar == 1 ? 'Sim' : 'Não'}</td>
                 <td>
                     ${this.isAdmin ? `
@@ -261,6 +282,57 @@ class ItemCORE extends COREManager {
                 </td>
             </tr>
         `;
+    }
+
+    editarMinimo(element, idItem, localValue, valorAtual) {
+        if (element.querySelector('input')) return;
+        const originalContent = element.innerHTML;
+        
+        element.innerHTML = `
+            <div class="input-group input-group-sm" style="width: 80px; margin: 0 auto;">
+                <input type="number" class="form-control" value="${valorAtual}" min="0">
+                <button class="btn btn-success btn-sm" type="button" onclick="event.stopPropagation(); itemCORE.salvarMinimo(${idItem}, '${localValue}', this.previousElementSibling.value, this.parentNode.parentNode)">
+                    <i class="fas fa-check"></i>
+                </button>
+            </div>
+        `;
+        const input = element.querySelector('input');
+        input.focus();
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') { e.preventDefault(); this.salvarMinimo(idItem, localValue, input.value, element); }
+            else if (e.key === 'Escape') { e.preventDefault(); element.innerHTML = originalContent; }
+        });
+    }
+
+    salvarMinimo(idItem, localValue, novoValor, elementTd) {
+        const minimo = parseInt(novoValor);
+        if (isNaN(minimo) || minimo < 0) {
+            alert('Valor inválido');
+            this.carregarDados(); // Revert
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('acao', 'atualizar_minimo');
+        formData.append('id_item', idItem);
+        formData.append('local', localValue);
+        formData.append('minimo', minimo);
+
+        // Usando o endpoint de movimentação porque é lá que está a lógica de atualizar_minimo
+        fetchAPI('/api/movimentacao', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                this.carregarDados(); // Reload table
+            } else {
+                alert(data.message || 'Erro ao atualizar');
+                this.carregarDados(); // Revert
+            }
+        })
+        .catch(err => console.error(err));
     }
 }
 
