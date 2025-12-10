@@ -37,11 +37,11 @@
                         <li><hr class="dropdown-divider"></li>
                         <li>
                             <a class="dropdown-item" href="#" data-section="lista_item">
-                                <i class="fa-solid fa-table-list"></i> Listar Itens
+                                <i class="fa-solid fa-table-list"></i>  Itens
                             </a>
                         </li>                        <li>
                             <a class="dropdown-item" href="#" data-section="lista_categoria_item">
-                                <i class="fa-solid fa-layer-group"></i> Listar Categorias
+                                <i class="fa-solid fa-layer-group"></i> Categorias
                             </a>
                         </li>
                     </ul>
@@ -51,6 +51,7 @@
                         <i class="fa-solid fa-users"></i> Funcionarios
                     </a>
                     <ul class="dropdown-menu">
+                        <?php if (isAdmin()): ?>
                         <li>
                             <a class="dropdown-item" href="#" data-section="cadastrar_funcionario">
                                 <i class="fa-solid fa-table-list"></i> Novo Funcionario
@@ -62,18 +63,20 @@
                             </a>
                         </li>
                         <li><hr class="dropdown-divider"></li>
+                        <?php endif; ?>
                         <li>
                             <a class="dropdown-item" href="#" data-section="listar_cargos">
-                                <i class="fa-solid fa-briefcase"></i> Listar Cargos
+                                <i class="fa-solid fa-briefcase"></i> Cargos
                             </a>
                         </li>
                         <li>
                             <a class="dropdown-item" href="#" data-section="listar_funcionarios">
-                                <i class="fa-solid fa-users"></i> Listar Funcionários
+                                <i class="fa-solid fa-users"></i> Funcionários
                             </a>
                         </li>
                     </ul>
                 </li>
+                <?php if (isAdmin()): ?>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                         <i class="fa-solid fa-circle-plus"></i> Cadastrar
@@ -100,6 +103,7 @@
                         </li>
                     </ul>
                 </li>
+                <?php endif; ?>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                         <i class="fas fa-user-circle"></i> <?php echo htmlspecialchars($_SESSION['nome'] ?? 'Usuário'); ?>
