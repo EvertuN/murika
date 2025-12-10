@@ -228,10 +228,9 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Recepcionista *</label>
-                        <select name="funcionario" id="selectFuncionarioRelatorio" class="form-select" required>
-                            <option value="">Carregando...</option>
-                        </select>
+                        <label class="form-label">Responsável pelo Relatório</label>
+                        <input type="text" class="form-control" value="<?php echo $_SESSION['nome']; ?>" readonly disabled>
+                        <input type="hidden" name="funcionario" value="<?php echo $_SESSION['id_funcionario'] ?? 0; ?>">
                     </div>
 
                     <div class="alert alert-info">

@@ -24,12 +24,21 @@
                     <input type="password" class="form-control" name="senha" 
                            placeholder="Senha do usuário" required>
                 </div>
+            </div>
+            <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Tipo *</label>
                     <select name="tipo" class="form-select" required>
                         <option value="usuario">Usuário</option>
                         <option value="admin">Administrador</option>
                     </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Cargo (Gera Funcionário)</label>
+                    <select name="id_cargo" class="form-select" id="selectCargoCadastro">
+                        <option value="">Nenhum (Apenas Sistema)</option>
+                    </select>
+                    <small class="text-muted">Cria automaticamente vinculação com RH</small>
                 </div>
             </div>
             <button type="submit" class="btn btn-primary">
@@ -62,6 +71,13 @@
                     <div class="mb-3">
                         <label class="form-label">Usuário *</label>
                         <input type="text" name="usuario" id="editUsuarioUsuario" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Cargo (Atualiza Funcionário)</label>
+                        <select name="id_cargo" id="editCargoUsuario" class="form-select">
+                            <option value="">Nenhum</option>
+                        </select>
                     </div>
 
                     <div class="mb-3">

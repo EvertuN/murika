@@ -54,13 +54,7 @@ class EstoqueManager {
             dataInput.value = `${ano}-${mes}-${dia}`;
         }
 
-        // Load employees when modal opens
-        const modal = document.getElementById('modalGerarRelatorio');
-        if (modal) {
-            modal.addEventListener('show.bs.modal', () => {
-                this.carregarFuncionarios();
-            });
-        }
+
 
         // Submissão do formulário
         form.addEventListener('submit', (e) => {
@@ -442,7 +436,7 @@ class EstoqueManager {
         const turno = formData.get('turno');
         const funcionario = formData.get('funcionario');
         
-        if (!data || !turno || !funcionario) {
+        if (!data || !turno) {
             this.mostrarMensagem('Por favor, preencha todos os campos', 'warning');
             return;
         }

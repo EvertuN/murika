@@ -1,5 +1,28 @@
 // Classe para gerenciar usuários
 class UsuarioCORE extends COREManager {
+    constructor(config) {
+        super(config);
+        // Carregar lista de cargos para o select
+        this.carregarCargosSelect();
+    }
+
+    carregarCargosSelect() {
+        fetchAPI('/api/cargo?acao=listar')
+            .then(response => response.json())
+            .then(data => {
+                const options = (data.success ? data.data : []).map(cargo =>
+                    `<option value="${cargo.id_cargo}">${cargo.cargo}</option>`
+                ).join('');
+
+                const selectCadastro = document.getElementById('selectCargoCadastro');
+                if (selectCadastro) selectCadastro.innerHTML = '<option value="">Nenhum (Apenas Sistema)</option>' + options;
+
+                const selectEdit = document.getElementById('editCargoUsuario');
+                if (selectEdit) selectEdit.innerHTML = '<option value="">Nenhum</option>' + options;
+            })
+            .catch(err => console.error('Erro ao carregar cargos:', err));
+    }
+
     criarLinhaTabela(item) {
         const ativoBadge = item.ativo == 1 
             ? '<span class="badge bg-success">Sim</span>' 
@@ -9,14 +32,22 @@ class UsuarioCORE extends COREManager {
             ? '<span class="badge bg-primary">Admin</span>'
             : '<span class="badge bg-secondary">Usuário</span>';
 
+        const cargoVinculado = item.nome_cargo 
+            ? `<br><small class="text-muted"><i class="fas fa-briefcase"></i> ${item.nome_cargo}</small>`
+            : '';
+
+        const funcionarioCheck = item.id_funcionario
+            ? ' <i class="fas fa-user-check text-success" title="Funcionário Vinculado"></i>'
+            : '';
+
         return `
             <tr>
-                <td>${item.nome}</td>
+                <td>${item.nome} ${funcionarioCheck} ${cargoVinculado}</td>
                 <td>${item.usuario}</td>
                 <td>${tipoBadge}</td>
                 <td class="text-center">${ativoBadge}</td>
                 <td>
-                    <button class="btn btn-sm btn-dark" onclick="abrirEditarUsuario('${item.id}', '${item.nome.replace(/'/g, "&#39;")}', '${item.usuario.replace(/'/g, "&#39;")}', '${item.tipo}', ${item.ativo})">
+                    <button class="btn btn-sm btn-dark" onclick="abrirEditarUsuario('${item.id}', '${item.nome.replace(/'/g, "&#39;")}', '${item.usuario.replace(/'/g, "&#39;")}', '${item.tipo}', ${item.ativo}, '${item.id_cargo || ''}')">
                         <i class="fas fa-edit"></i> Editar
                     </button>
                     <button class="btn btn-sm btn-danger" onclick="usuarioCORE.deletar('${item.id}', 'Deseja realmente deletar o usuário ${item.nome.replace(/'/g, "&#39;")}?')">
@@ -29,12 +60,13 @@ class UsuarioCORE extends COREManager {
 }
 
 // Função para abrir modal de edição de usuário
-function abrirEditarUsuario(id, nome, usuario, tipo, ativo) {
+function abrirEditarUsuario(id, nome, usuario, tipo, ativo, idCargo) {
     document.getElementById('editUsuarioId').value = id;
     document.getElementById('editNomeUsuario').value = nome;
     document.getElementById('editUsuarioUsuario').value = usuario;
     document.getElementById('editTipoUsuario').value = tipo;
     document.getElementById('editAtivoUsuario').checked = (ativo == 1);
+    document.getElementById('editCargoUsuario').value = idCargo || ''; // Selecionar cargo
     document.getElementById('editSenhaUsuario').value = '';
 
     const modal = new bootstrap.Modal(document.getElementById('modalEditarUsuario'));

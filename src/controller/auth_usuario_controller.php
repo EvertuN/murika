@@ -50,6 +50,7 @@ switch($acao) {
         $usuario = trim($_POST['usuario'] ?? '');
         $senha = $_POST['senha'] ?? '';
         $tipo = $_POST['tipo'] ?? 'usuario';
+        $id_cargo = !empty($_POST['id_cargo']) ? $_POST['id_cargo'] : null;
         
         if(empty($nome) || empty($usuario) || empty($senha)) {
             echo json_encode(['success' => false, 'message' => 'Todos os campos são obrigatórios']);
@@ -66,12 +67,12 @@ switch($acao) {
             break;
         }
 
-        $resultado = $usuarioModel->cadastrar($nome, $usuario, $senha, $tipo);
+        $resultado = $usuarioModel->cadastrar($nome, $usuario, $senha, $tipo, $id_cargo);
         if($resultado['success']) {
             log_event_usuario('CREATE_USER', ['new_user_id' => $resultado['id'], 'new_username' => $usuario, 'role' => $tipo]);
             echo json_encode(['success' => true, 'message' => 'Usuário cadastrado com sucesso!']);
         } else {
-            echo json_encode(['success' => false, 'message' => 'Erro ao cadastrar usuário']);
+            echo json_encode(['success' => false, 'message' => 'Erro ao cadastrar usuário: ' . ($resultado['message'] ?? '')]);
         }
         break;
 
@@ -104,6 +105,7 @@ switch($acao) {
         $tipo = $_POST['tipo'] ?? 'usuario';
         $ativo = isset($_POST['ativo']) ? 1 : 0;
         $senha = !empty($_POST['senha']) ? $_POST['senha'] : null;
+        $id_cargo = !empty($_POST['id_cargo']) ? $_POST['id_cargo'] : null;
         
         if(empty($nome) || empty($usuario)) {
             echo json_encode(['success' => false, 'message' => 'Nome e usuário são obrigatórios']);
@@ -120,7 +122,7 @@ switch($acao) {
             break;
         }
 
-        if($usuarioModel->editar($id, $nome, $usuario, $tipo, $ativo, $senha)) {
+        if($usuarioModel->editar($id, $nome, $usuario, $tipo, $ativo, $senha, $id_cargo)) {
             log_event_usuario('UPDATE_USER', ['target_user_id' => $id, 'changes' => ['nome' => $nome, 'usuario' => $usuario, 'tipo' => $tipo, 'ativo' => $ativo]]);
             echo json_encode(['success' => true, 'message' => 'Usuário atualizado com sucesso!']);
         } else {
