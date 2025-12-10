@@ -51,19 +51,6 @@
                         <i class="fa-solid fa-users"></i> Funcionarios
                     </a>
                     <ul class="dropdown-menu">
-                        <?php if (isAdmin()): ?>
-                        <li>
-                            <a class="dropdown-item" href="#" data-section="cadastrar_funcionario">
-                                <i class="fa-solid fa-table-list"></i> Novo Funcionario
-                            </a>
-                        </li> 
-                        <li>
-                            <a class="dropdown-item" href="#" data-section="cadastrar_cargo">
-                                <i class="fa-solid fa-layer-group"></i> Novo Cargo
-                            </a>
-                        </li>
-                        <li><hr class="dropdown-divider"></li>
-                        <?php endif; ?>
                         <li>
                             <a class="dropdown-item" href="#" data-section="listar_cargos">
                                 <i class="fa-solid fa-briefcase"></i> Cargos
