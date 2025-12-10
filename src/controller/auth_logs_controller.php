@@ -20,11 +20,11 @@ switch($acao) {
         }
 
         try {
-            $limit = 50;
+            $limit = 10;
             $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
             $offset = ($page - 1) * $limit;
 
-                // Buscar logs
+            // Buscar logs
             $type = $_GET['type'] ?? 'access'; // Default mudou para 'access' ser mais seguro se 'all' for complexo
             $whereClause = "";
             $table = "system_logs"; // Padrão
@@ -33,42 +33,82 @@ switch($acao) {
             // Definição da Query baseada no tipo
             if ($type === 'access') {
                 $table = "auth_logs";
-                $whereClause = "WHERE 1=1"; // Mostrar tudo de auth_logs
+                $whereClause = "WHERE 1=1";
+                $sqlCount = "SELECT COUNT(*) FROM auth_logs";
+                
+                $sql = "
+                    SELECT l.*, u.nome as user_name, 'access' as log_source 
+                    FROM auth_logs l 
+                    LEFT JOIN auth_users u ON l.user_id = u.id 
+                    ORDER BY l.created_at DESC 
+                    LIMIT :limit OFFSET :offset
+                ";
+                
             } elseif ($type === 'system') {
                 $table = "system_logs";
-                $whereClause = "WHERE category != 'REPORT'"; // Mostrar tudo menos relatórios
+                $whereClause = "WHERE category != 'REPORT'";
+                $sqlCount = "SELECT COUNT(*) FROM system_logs WHERE category != 'REPORT'";
+                
+                $sql = "
+                    SELECT l.*, u.nome as user_name, 'system' as log_source 
+                    FROM system_logs l 
+                    LEFT JOIN auth_users u ON l.user_id = u.id 
+                    WHERE category != 'REPORT'
+                    ORDER BY l.created_at DESC 
+                    LIMIT :limit OFFSET :offset
+                ";
+                
             } elseif ($type === 'reports') {
                 $table = "system_logs";
                 $whereClause = "WHERE category = 'REPORT'";
+                $sqlCount = "SELECT COUNT(*) FROM system_logs WHERE category = 'REPORT'";
+                
+                $sql = "
+                    SELECT l.*, u.nome as user_name, 'system' as log_source 
+                    FROM system_logs l 
+                    LEFT JOIN auth_users u ON l.user_id = u.id 
+                    WHERE category = 'REPORT'
+                    ORDER BY l.created_at DESC 
+                    LIMIT :limit OFFSET :offset
+                ";
+                
             } else {
-                // 'all' -> Vamos focar em system_logs por enquanto ou fazer UNION? 
-                // Para simplificar e evitar erros de coluna, 'all' mostra system_logs (auditoria geral).
-                // Acessos ficam separados.
-                $type = 'system';
-                $table = "system_logs"; 
-                $whereClause = "WHERE category != 'REPORT'";
+                // ALL: Union of Access + System (excluding reports)
+                $sqlCount = "
+                    SELECT (
+                        (SELECT COUNT(*) FROM auth_logs) + 
+                        (SELECT COUNT(*) FROM system_logs WHERE category != 'REPORT')
+                    ) as total
+                ";
+                
+                $sql = "
+                    SELECT * FROM (
+                        SELECT 
+                            l.id, l.user_id, l.action, 'ACCESS' as category, l.ip, l.created_at, 
+                            u.nome as user_name, l.details
+                        FROM auth_logs l
+                        LEFT JOIN auth_users u ON l.user_id = u.id
+                        
+                        UNION ALL
+                        
+                        SELECT 
+                            l.id, l.user_id, l.action, l.category, l.ip, l.created_at,
+                            u.nome as user_name, l.details
+                        FROM system_logs l
+                        LEFT JOIN auth_users u ON l.user_id = u.id
+                        WHERE l.category != 'REPORT'
+                    ) as combined_logs
+                    ORDER BY created_at DESC
+                    LIMIT :limit OFFSET :offset
+                ";
             }
             
-            // Contar total para paginação com filtro
-            $sqlCount = "SELECT COUNT(*) FROM $table l $whereClause";
+            // Execute Count
             $stmtCount = $db->prepare($sqlCount);
-            if (!empty($params)) {
-                $stmtCount->execute($params);
-            } else {
-                $stmtCount->execute();
-            }
+            $stmtCount->execute();
             $total = $stmtCount->fetchColumn();
 
-            // Buscar logs
-            $sql = "
-                SELECT l.*, u.nome as user_name 
-                FROM $table l 
-                LEFT JOIN auth_users u ON l.user_id = u.id 
-                $whereClause
-                ORDER BY l.created_at DESC 
-                LIMIT :limit OFFSET :offset
-            ";
-            
+            // Execute Query
             $stmt = $db->prepare($sql);
             $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
             $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
