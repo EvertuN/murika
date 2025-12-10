@@ -66,9 +66,9 @@ class UsuarioModel {
         return $stmt->execute();
     }
 
-    // Deletar usuário
+    // Deletar usuário (Soft Delete)
     public function deletar($id) {
-        $query = "DELETE FROM " . $this->table . " WHERE id = :id";
+        $query = "UPDATE " . $this->table . " SET ativo = 0 WHERE id = :id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':id', $id);
         return $stmt->execute();

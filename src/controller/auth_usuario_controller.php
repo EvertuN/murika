@@ -102,7 +102,7 @@ switch($acao) {
         $nome = trim($_POST['nome'] ?? '');
         $usuario = trim($_POST['usuario'] ?? '');
         $tipo = $_POST['tipo'] ?? 'usuario';
-        $ativo = isset($_POST['ativo']) ? (int)$_POST['ativo'] : 1;
+        $ativo = isset($_POST['ativo']) ? 1 : 0;
         $senha = !empty($_POST['senha']) ? $_POST['senha'] : null;
         
         if(empty($nome) || empty($usuario)) {
