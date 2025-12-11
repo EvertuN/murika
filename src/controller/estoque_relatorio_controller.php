@@ -61,7 +61,9 @@ function renderizarRelatorio() {
     $id_funcionario = intval($_GET['funcionario'] ?? 0);
     
     // Get employee name
-    $nome_funcionario = 'N/A';
+    // Se vier ID de funcionário, busca o nome dele. Se não, usa o nome do usuário logado.
+    $nome_funcionario = $_SESSION['nome'] ?? 'Usuário'; 
+    
     if ($id_funcionario > 0) {
         $stmt = $pdo->prepare("SELECT nome FROM hotel_funcionarios WHERE id_funcionario = :id");
         $stmt->execute([':id' => $id_funcionario]);
