@@ -106,11 +106,11 @@ function renderizarRelatorio() {
     $stmt->execute();
     $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
-    // Get movements during the shift
-    $sql_mov = "SELECT id_item, tipo, SUM(quantidade) as total
+    // Get movements during the shift - AGORA AGRUPADO POR LOCAL
+    $sql_mov = "SELECT id_item, tipo, local, SUM(quantidade) as total
                 FROM estoque_movimentacao
                 WHERE data_movimentacao >= :data_inicio AND data_movimentacao < :data_fim
-                GROUP BY id_item, tipo";
+                GROUP BY id_item, tipo, local";
     $stmt_mov = $pdo->prepare($sql_mov);
     $stmt_mov->execute([':data_inicio' => $data_inicio, ':data_fim' => $data_fim]);
     $movements = $stmt_mov->fetchAll(PDO::FETCH_ASSOC);
@@ -134,13 +134,16 @@ function renderizarRelatorio() {
     $stmt_mov_detalhes->execute([':data_inicio' => $data_inicio, ':data_fim' => $data_fim]);
     $movimentos_com_observacao = $stmt_mov_detalhes->fetchAll(PDO::FETCH_ASSOC);
     
-    // Organize movements by item
+    // Organize movements by item AND local
     $movimentos_por_item = [];
     foreach ($movements as $mov) {
         if (!isset($movimentos_por_item[$mov['id_item']])) {
-            $movimentos_por_item[$mov['id_item']] = ['entrada' => 0, 'saida' => 0];
+            $movimentos_por_item[$mov['id_item']] = [];
         }
-        $movimentos_por_item[$mov['id_item']][$mov['tipo']] = intval($mov['total']);
+        if (!isset($movimentos_por_item[$mov['id_item']][$mov['local']])) {
+            $movimentos_por_item[$mov['id_item']][$mov['local']] = ['entrada' => 0, 'saida' => 0];
+        }
+        $movimentos_por_item[$mov['id_item']][$mov['local']][$mov['tipo']] = intval($mov['total']);
     }
     
     // Get stock levels for ALL items (using LEFT JOIN to include items without stock records)
@@ -203,35 +206,67 @@ function renderizarRelatorio() {
         $id = $item['id_item'];
         $categoria = $item['nome_categoria'] ?? 'SEM CATEGORIA';
         
-        // Get movements (default to 0 if no movements)
-        $entrada = isset($movimentos_por_item[$id]) ? $movimentos_por_item[$id]['entrada'] : 0;
-        $saida = isset($movimentos_por_item[$id]) ? $movimentos_por_item[$id]['saida'] : 0;
-        
-        // For items that control frigobar, use frigobar stock, otherwise use recepcao
-        $local = ($item['controla_frigobar'] == 1) ? 'frigobar' : 'recepcao';
-        
-        // Get stock levels (default to 0 if no stock record)
-        if (isset($estoque_por_item[$id][$local])) {
-            $inicial = $estoque_por_item[$id][$local]['inicial'];
-            $final = $estoque_por_item[$id][$local]['final'];
-        } else {
-            // Item has no stock record - show as 0
-            $inicial = 0;
-            $final = 0;
+        // Define scopes to process
+        $locais = ['recepcao'];
+        if ($item['controla_frigobar'] == 1) {
+            $locais[] = 'frigobar';
         }
-        
-        // Organize by category
-        if (!isset($dados_por_categoria[$categoria])) {
-            $dados_por_categoria[$categoria] = [];
+
+        foreach ($locais as $local) {
+             // Get movements for this specific local
+            $entrada = isset($movimentos_por_item[$id][$local]) ? $movimentos_por_item[$id][$local]['entrada'] : 0;
+            $saida = isset($movimentos_por_item[$id][$local]) ? $movimentos_por_item[$id][$local]['saida'] : 0;
+            
+            // Get stock levels
+            if (isset($estoque_por_item[$id][$local])) {
+                $inicial = $estoque_por_item[$id][$local]['inicial'];
+                $final = $estoque_por_item[$id][$local]['final'];
+            } else {
+                $inicial = 0;
+                $final = 0;
+            }
+
+            // Custom Categorization Logic
+            $db_cat = mb_strtoupper($item['nome_categoria'] ?? '', 'UTF-8');
+            $custom_categoria = 'OUTROS';
+            
+            if (strpos($db_cat, 'BEBIDA') !== false || strpos($db_cat, 'REFRIGERANTE') !== false) {
+                if ($local === 'frigobar') {
+                    $custom_categoria = 'BEBIDAS (FRIGOBAR)';
+                } else {
+                    $custom_categoria = 'BEBIDAS (ESTOQUE)';
+                }
+            } elseif (strpos($db_cat, 'ENXOVAL') !== false || strpos($db_cat, 'CAMA') !== false || strpos($db_cat, 'BANHO') !== false) {
+                $custom_categoria = 'ENXOVAIS';
+            } else {
+                $custom_categoria = 'OUTROS';
+            }
+
+            // Determine Item Name Display
+            // Remove suffixes if category already specifies location to be cleaner
+            $nome_exibicao = $item['nome'];
+            
+            // Add suffix ONLY if it's in 'OUTROS' and controls frigobar to avoid ambiguity
+            // Or if it is a beverage but we want to be super explicit? 
+            // The user wanted "separation", implying the headers do the work.
+            // keeping names clean for Bebidas.
+            if ($custom_categoria === 'OUTROS' && $item['controla_frigobar'] == 1) {
+                 $nome_exibicao .= ($local === 'recepcao') ? ' (Estoque)' : ' (Frigobar)';
+            }
+
+            // Organize by custom category
+            if (!isset($dados_por_categoria[$custom_categoria])) {
+                $dados_por_categoria[$custom_categoria] = [];
+            }
+            
+            $dados_por_categoria[$custom_categoria][] = [
+                'nome' => $nome_exibicao,
+                'inicial' => $inicial,
+                'entrada' => $entrada,
+                'saida' => $saida,
+                'final' => $final
+            ];
         }
-        
-        $dados_por_categoria[$categoria][] = [
-            'nome' => $item['nome'],
-            'inicial' => $inicial,
-            'entrada' => $entrada,
-            'saida' => $saida,
-            'final' => $final
-        ];
     }
     
     // Generate dynamic table HTML
