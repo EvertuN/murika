@@ -7,7 +7,11 @@
     <title>Relatório Diário de Estoque - Hotel</title>
 </head>
 <body>
+    <button class="print-button" onclick="window.print()">
+            Imprimir Relatório
+        </button>
     <div class="report-container">
+
 
         <h1>Relatório Diário de Inventário</h1>
 
