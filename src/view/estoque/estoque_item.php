@@ -43,9 +43,8 @@
 <!-- Lista de Itens -->
 <div id="lista_item" class="section">
     <div class="card">
-        <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h4>Itens Cadastrados</h4>
+                <h4>Itens</h4>
                 <button class="btn btn-primary" data-section="cadastrar_item">
                     <i class="fas fa-plus"></i> Adicionar Item
                 </button>
@@ -73,7 +72,6 @@
                     </tbody>
                 </table>
             </div>
-        </div>
     </div>
 </div>
 

@@ -13,7 +13,6 @@
         
         <div id="mensagem-logs-admin"></div>
         
-        <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-striped table-hover">
                     <thead>
@@ -40,6 +39,5 @@
                 </ul>
             </nav>
         </div>
-    </div>
 </div>
 

@@ -56,7 +56,7 @@
     <!-- <h2 class="page-title">Categorias Cadastradas</h2> -->
     <div class="card">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4>Lista de Categorias</h4>
+            <h4>Categorias</h4>
             <button class="btn btn-primary" data-section="cadastrar_categoria_item">
                 <i class="fas fa-plus"></i> Nova Categoria
             </button>
