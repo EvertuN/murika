@@ -46,6 +46,7 @@
                         </li>
                     </ul>
                 </li>
+                <?php if (isAdmin()): ?>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                         <i class="fa-solid fa-users"></i> Funcionarios
@@ -63,6 +64,7 @@
                         </li>
                     </ul>
                 </li>
+                <?php endif; ?>
                 <?php if (isAdmin()): ?>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
