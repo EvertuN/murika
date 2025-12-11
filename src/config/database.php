@@ -3,10 +3,10 @@
 date_default_timezone_set('America/Porto_Velho');
 
 class Database {
-    private $host = 'db';
-    private $db_name = 'murika';
-    private $username = 'root';
-    private $password = 'arikas123';
+    private $host = 'host_name';
+    private $db_name = 'db_name';
+    private $username = 'user_name';
+    private $password = 'password_name';
     private $conn;
 
     public function connect() {
