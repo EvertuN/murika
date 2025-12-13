@@ -1,6 +1,5 @@
 # 🏨 Murika Hotel Management System
 
-> **O melhor, maior e mais humilde sistema de gestão hoteleira.** 
 > Simplifique sua operação com controle total de estoque, funcionários e segurança.
 
 ---
