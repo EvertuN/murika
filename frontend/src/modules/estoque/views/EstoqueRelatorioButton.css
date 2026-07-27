@@ -1,0 +1,31 @@
+.EstoqueRelatorioButton-button {
+  border-radius: 0.7rem;
+  font-weight: 600;
+  min-height: 2.2rem;
+  padding-inline: 0.9rem;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.EstoqueRelatorioButton-button i {
+  font-size: 0.85rem;
+}
+
+.EstoqueRelatorioButton-button:hover,
+.EstoqueRelatorioButton-button:focus-visible {
+  background: var(--tertiary-color);
+  border-color: var(--primary-color);
+  color: var(--brand-primary);
+  box-shadow: 0 0.35rem 0.9rem var(--box-shadow);
+  transform: translateY(-1px);
+}
+
+.EstoqueRelatorioButton-modal {
+  border-radius: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .EstoqueRelatorioButton-button {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+}

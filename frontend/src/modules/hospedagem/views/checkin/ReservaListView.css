@@ -1,0 +1,148 @@
+.AppHospedagem-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.AppHospedagem-filters {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.AppHospedagem-filters label {
+  color: #111827;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+
+.AppHospedagem-filterActions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1.25rem;
+}
+
+.AppHospedagem-reservaAlert {
+  align-items: flex-start;
+  background: #fff8e6;
+  border: 1px solid #f1c96b;
+  border-radius: 0.55rem;
+  box-shadow: 0 0.65rem 1.6rem rgba(75, 62, 33, 0.12);
+  color: #4b3e21;
+  display: flex;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+  padding: 0.85rem 1rem;
+  position: sticky;
+  top: 0.75rem;
+  z-index: 5;
+}
+
+.AppHospedagem-reservaAlertIcon {
+  align-items: center;
+  background: #ffedbd;
+  border-radius: 0.45rem;
+  color: #8a5a00;
+  display: inline-flex;
+  flex: 0 0 auto;
+  height: 2rem;
+  justify-content: center;
+  width: 2rem;
+}
+
+.AppHospedagem-reservaAlertBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.AppHospedagem-reservaAlertBody strong {
+  color: #3f3218;
+  font-size: 0.95rem;
+}
+
+.AppHospedagem-reservaAlertBody span,
+.AppHospedagem-reservaAlertBody small {
+  color: #5f4b21;
+  font-size: 0.86rem;
+}
+
+.AppHospedagem-reservaAlertBody .AppHospedagem-reservaAlertDanger {
+  color: #b00000;
+  font-weight: 800;
+}
+
+.AppHospedagem-table tbody tr:nth-child(odd) {
+  background: #f1f1f1;
+}
+
+.AppHospedagem-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  min-width: 2.75rem;
+  width: fit-content;
+  border-radius: 0.4rem;
+  padding: 0.3rem 0.7rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+.AppHospedagem-badge--open {
+  background: #E6F1FB;
+  color: #0C447C;
+}
+
+.AppHospedagem-badge--closed {
+  background: #F1EFE8;
+  color: #444441;
+}
+
+.AppHospedagem-badge--canceled {
+  background: #FCEBEB;
+  color: #791F1F;
+}
+
+.AppHospedagem-badge--paid {
+  background: var(--badge-bg-ok);
+  color: var(--badge-ok);
+}
+
+.AppHospedagem-badge--unpaid {
+  background: var(--badge-bg-baixo);
+  color: var(--badge-baixo);
+}
+
+.AppHospedagem-actionMenu {
+  min-width: 3rem;
+}
+
+.AppHospedagem-dropdownMenu {
+  left: auto !important;
+  right: 0;
+  top: calc(100% + 0.35rem);
+}
+
+@media (max-width: 1200px) {
+  .AppHospedagem-filters {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .AppHospedagem-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .AppHospedagem-filters {
+    grid-template-columns: 1fr;
+  }
+
+}

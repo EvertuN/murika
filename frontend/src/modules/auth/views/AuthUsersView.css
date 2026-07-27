@@ -1,0 +1,99 @@
+.auth-users-view {
+  padding: 2rem;
+}
+
+.auth-users-view header {
+  margin-bottom: 1.5rem;
+}
+
+.auth-users-view h1 {
+  margin: .25rem 0;
+}
+
+.auth-users-view header p {
+  margin: 0;
+  color: #666;
+}
+
+.auth-users-eyebrow {
+  color: #555;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.auth-user-form {
+  margin-bottom: 1.5rem;
+  padding: 1.25rem;
+  border: 1px solid #dedede;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.auth-user-form h2 {
+  margin: 0 0 1rem;
+  font-size: 1.15rem;
+}
+
+.auth-user-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 1rem;
+}
+
+.auth-user-form-grid label {
+  display: grid;
+  gap: .4rem;
+  font-weight: 600;
+}
+
+.auth-user-form-actions,
+.auth-user-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+
+.auth-user-form-actions {
+  margin-top: 1rem;
+}
+
+.auth-users-table-wrap {
+  overflow-x: auto;
+  padding: 1rem;
+  border: 1px solid #dedede;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.auth-users-table td {
+  vertical-align: middle;
+}
+
+.auth-users-table td small {
+  display: block;
+  color: #666;
+}
+
+.auth-users-table .badge {
+  margin-right: .35rem;
+}
+
+.auth-user-status {
+  font-weight: 700;
+}
+
+.auth-user-status.active {
+  color: #166534;
+}
+
+.auth-user-status.inactive {
+  color: #991b1b;
+}
+
+@media (max-width: 767px) {
+  .auth-users-view {
+    padding: 1rem;
+  }
+}

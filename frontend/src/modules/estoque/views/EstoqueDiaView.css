@@ -1,0 +1,304 @@
+.EstoqueDiaView-view {
+  width: 100%;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 1rem;
+  box-shadow: 0 0.75rem 2rem var(--box-shadow);
+  padding: 2rem 2rem 2.25rem;
+}
+
+.EstoqueDiaView-view h4 {
+  color: var(--brand-primary);
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.EstoqueDiaView-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.EstoqueDiaView-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.6rem;
+}
+
+.EstoqueDiaView-toolbarButton {
+  border-radius: 0.7rem;
+  font-weight: 600;
+  min-height: 2.2rem;
+  padding-inline: 0.9rem;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.EstoqueDiaView-toolbarButton i {
+  font-size: 0.85rem;
+}
+
+.EstoqueDiaView-toolbarButton--primary {
+  box-shadow: 0 0.4rem 1rem var(--tertiary-color);
+}
+
+.EstoqueDiaView-toolbarButton:hover,
+.EstoqueDiaView-toolbarButton:focus-visible {
+  background: var(--tertiary-color);
+  border-color: var(--primary-color);
+  color: var(--brand-primary);
+  box-shadow: 0 0.35rem 0.9rem var(--box-shadow);
+  transform: translateY(-1px);
+}
+
+.EstoqueDiaView-toolbarButton--primary:hover,
+.EstoqueDiaView-toolbarButton--primary:focus-visible {
+  background: var(--secondary-color);
+  border-color: var(--secondary-color);
+  color: var(--card-bg);
+  box-shadow: 0 0.45rem 1rem var(--tertiary-color);
+}
+
+.EstoqueDiaView-tabs {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 1rem;
+  overflow: visible;
+  padding-inline: 0;
+}
+
+.EstoqueDiaView-tab {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  color: var(--muted-color);
+  display: inline-flex;
+  gap: 0.7rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: -1px;
+  padding: 0.7rem 0.45rem 0.85rem;
+  transition: color 0.2s ease, border-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.EstoqueDiaView-tab:hover {
+  color: var(--brand-primary);
+}
+
+.EstoqueDiaView-tab.active {
+  border-bottom-color: var(--brand-primary);
+  color: var(--brand-primary);
+}
+
+.EstoqueDiaView-tabLabel {
+  align-items: center;
+  display: inline-flex;
+  gap: 0.55rem;
+}
+
+.EstoqueDiaView-tabCount {
+  align-items: center;
+  background: var(--bg-color);
+  border-radius: 999px;
+  color: var(--muted-color);
+  display: inline-flex;
+  font-size: 0.75rem;
+  font-weight: 700;
+  justify-content: center;
+  min-width: 1.45rem;
+  padding: 0.15rem 0.45rem;
+}
+
+.EstoqueDiaView-tab.active .EstoqueDiaView-tabCount {
+  background: var(--brand-primary);
+  color: var(--card-bg);
+}
+
+.EstoqueDiaView-content {
+  padding-top: 0.1rem;
+}
+
+.EstoqueDiaView-search {
+  margin-bottom: 0.95rem;
+}
+
+.EstoqueDiaView-search .form-control {
+  border-color: var(--border-color);
+  border-radius: 0.7rem;
+  box-shadow: none;
+  min-height: 2.85rem;
+  padding: 0.75rem 1rem;
+}
+
+.EstoqueDiaView-search .form-control::placeholder {
+  color: var(--muted-color);
+}
+
+.EstoqueDiaView-tableWrap {
+  overflow-x: auto;
+}
+
+.EstoqueDiaView-table {
+  --bs-table-bg: transparent;
+  --bs-table-hover-bg: var(--tertiary-color);
+  margin-bottom: 0;
+}
+
+.EstoqueDiaView-view .table th {
+  border-bottom: 1px solid var(--border-color);
+  color: var(--brand-primary);
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 0.75rem 0.4rem;
+}
+
+.EstoqueDiaView-view .table td {
+  border-bottom: 1px solid var(--border-color);
+  font-size: 0.98rem;
+  padding: 0.58rem 0.4rem;
+  vertical-align: middle;
+}
+
+.EstoqueDiaView-itemCell {
+  color: var(--text-color);
+}
+
+.EstoqueDiaView-quantityBadge,
+.EstoqueDiaView-statusBadge {
+  align-items: center;
+  border-radius: 0.5rem;
+  display: inline-flex;
+  font-size: 0.92rem;
+  font-weight: 700;
+  justify-content: center;
+  line-height: 1;
+  min-height: 1.7rem;
+  padding: 0.35rem 0.7rem;
+}
+
+.EstoqueDiaView-quantityBadge {
+  background: var(--badge-bg-quantidade);
+  color: var(--badge-quantidade);
+  min-width: 2.4rem;
+}
+
+.EstoqueDiaView-statusBadge--ok {
+  background: var(--badge-bg-ok);
+  color: var(--badge-ok);
+}
+
+.EstoqueDiaView-statusBadge--baixo {
+  background: var(--badge-bg-baixo);
+  color: var(--badge-baixo);
+}
+
+.EstoqueDiaView-statusBadge--critico {
+  background: var(--badge-status-bg-danger);
+  color: var(--badge-saida);
+}
+
+.EstoqueDiaView-statusBadge--default {
+  background: var(--bg-color);
+  color: var(--muted-color);
+}
+
+.EstoqueDiaView-actions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: center;
+}
+
+.EstoqueDiaView-actionButton {
+  border-radius: 0.55rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  min-height: 2rem;
+  min-width: 5.4rem;
+  padding-inline: 0.7rem;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.EstoqueDiaView-actionButton i {
+  font-size: 0.8rem;
+}
+
+.EstoqueDiaView-actionButton--entrada {
+  background: var(--card-bg);
+  border-color: var(--primary-color);
+  color: var(--brand-primary);
+}
+
+.EstoqueDiaView-actionButton--saida {
+  background: var(--btn-deletar);
+  border-color: var(--btn-deletar);
+  color: var(--card-bg);
+}
+
+.EstoqueDiaView-actionButton--saida:hover,
+.EstoqueDiaView-actionButton--saida:focus-visible {
+  background: var(--badge-saida);
+  border-color: var(--badge-saida);
+  color: var(--card-bg);
+  box-shadow: 0 0.35rem 0.9rem var(--box-shadow);
+  transform: translateY(-1px);
+}
+
+.EstoqueDiaView-actionButton--entrada:hover,
+.EstoqueDiaView-actionButton--entrada:focus-visible {
+  background: var(--tertiary-color);
+  border-color: var(--primary-color);
+  color: var(--brand-primary);
+  box-shadow: 0 0.35rem 0.9rem var(--box-shadow);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+  .EstoqueDiaView-view {
+    border-radius: 0.75rem;
+    padding: 1.1rem;
+  }
+
+  .EstoqueDiaView-header {
+    flex-direction: column;
+    align-items: stretch;
+    margin-bottom: 1.25rem;
+  }
+
+  .EstoqueDiaView-toolbar {
+    justify-content: stretch;
+  }
+
+  .EstoqueDiaView-toolbarButton {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+
+  .EstoqueDiaView-tabs {
+    gap: 0.6rem;
+  }
+
+  .EstoqueDiaView-tab {
+    padding-inline: 0.2rem;
+  }
+
+  .EstoqueDiaView-actions {
+    width: 100%;
+  }
+
+  .EstoqueDiaView-actionButton {
+    flex: 1 1 48%;
+  }
+
+  .EstoqueDiaView-view .table th,
+  .EstoqueDiaView-view .table td {
+    font-size: 0.88rem;
+  }
+}

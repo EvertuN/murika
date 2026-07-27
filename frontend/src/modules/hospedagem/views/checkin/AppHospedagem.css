@@ -1,0 +1,72 @@
+.AppHospedagem-view {
+  width: 100%;
+  min-height: 60vh;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+  box-shadow: 0 0.5rem 1.5rem rgba(15, 23, 42, 0.08);
+  padding: 2rem;
+}
+
+.AppHospedagem-view h4,
+.AppHospedagem-sectionTitle {
+  color: var(--brand-primary);
+  font-weight: 700;
+}
+
+.AppHospedagem-view .table th {
+  color: var(--brand-primary);
+  font-size: 0.86rem;
+  font-weight: 700;
+  vertical-align: middle;
+}
+
+.AppHospedagem-view .table td {
+  font-size: 0.9rem;
+  vertical-align: middle;
+}
+
+.AppHospedagem-view .table-responsive {
+  overflow: visible;
+}
+
+.AppHospedagem-view .dropdown-menu {
+  min-width: 12rem;
+  z-index: 30;
+}
+
+.AppHospedagem-view .dropdown-item {
+  white-space: nowrap;
+}
+
+.AppHospedagem-view .btn-outline-secondary:hover,
+.AppHospedagem-view .btn-outline-secondary:focus,
+.AppHospedagem-view .btn-outline-secondary:focus-visible,
+.AppHospedagem-view .btn-outline-secondary:active {
+  background-color: #fff !important;
+  border-color: var(--bs-primary) !important;
+  color: var(--bs-primary) !important;
+  box-shadow: none !important;
+}
+
+.AppHospedagem-warning {
+  background: #fff3cd;
+  border: 1px solid #ffd86b;
+  border-radius: 0.35rem;
+  color: #654600;
+  margin-bottom: 1.25rem;
+  padding: 0.8rem 1rem;
+}
+
+@media (max-width: 768px) {
+  .AppHospedagem-view {
+    border-radius: 0.5rem;
+    padding: 1rem;
+  }
+
+  .AppHospedagem-view .table-responsive {
+    margin: -0.5rem;
+    overflow: auto;
+    padding: 0.5rem;
+  }
+}

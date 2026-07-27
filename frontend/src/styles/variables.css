@@ -1,0 +1,61 @@
+﻿:root {
+  --primary-color: #000000;
+  --secondary-color: #1f1f1f;
+  --primary-active-color: #333333;
+  --tertiary-color: rgba(0, 0, 0, 0.08);
+  --focus-ring-color: rgba(0, 0, 0, 0.18);
+
+  --bg-color: #f4f6f9;
+  --card-bg: #ffffff;
+  --text-color: #2e3238;
+  --border-color: #dfe4ea;
+  --box-shadow: rgba(0, 0, 0, 0.1);
+  --muted-color: #6c757d;
+
+  --badge-entrada: #155724;
+  --badge-bg-entrada: #d4edda;
+  --badge-saida: #721c24;
+  --badge-bg-saida: #f8d7da;
+
+  --btn-editar: #005b8f;
+  --btn-bg-editar: #ffffff;
+  --btn-deletar: #dc3545;
+  --btn-bg-deletar: #ffffff;
+
+  --badge-ok: #155724;
+  --badge-bg-ok: #d4edda;
+  --badge-baixo: #856404;
+  --badge-bg-baixo: #fff3cd;
+  --badge-quantidade: #004085;
+  --badge-bg-quantidade: #cce5ff;
+
+  --navbar-primary: #ffffff;
+  --navbar-secondary: rgba(255, 255, 255, 0.1);
+  --sidebar-bg: var(--primary-color);
+  --brand-primary: var(--primary-color);
+  --primary-Font: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  --bs-primary: var(--primary-color);
+  --bs-primary-rgb: 0, 0, 0;
+  --bs-link-color: var(--primary-color);
+  --bs-link-color-rgb: 0, 0, 0;
+  --bs-link-hover-color: var(--secondary-color);
+  --bs-link-hover-color-rgb: 31, 31, 31;
+  --bs-secondary: #6c757d;
+  --bs-secondary-rgb: 108, 117, 125;
+  --bs-danger: #dc3545;
+
+  --badge-status-danger: #000000;
+  --badge-status-success: #000000;
+  --badge-status-warning: #000000;
+  --badge-status-bg-danger: #ee8993;
+  --badge-status-bg-success: #64d8a2;
+  --badge-status-bg-warning: #fde499;
+
+  --main-content-padding-y: 1.25rem;
+  --main-content-padding-x: 1.5rem;
+
+  --sidebar-link-color: rgba(255, 255, 255, 0.9);
+  --sidebar-link-hover-bg: rgba(255, 255, 255, 0.14);
+  --sidebar-link-active-bg: rgba(255, 255, 255, 0.22);
+}

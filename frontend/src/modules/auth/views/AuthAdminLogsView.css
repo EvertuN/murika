@@ -1,0 +1,169 @@
+.AuthAdminLogsView-view {
+  width: 100%;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+  box-shadow: 0 0.5rem 1.5rem rgba(15, 23, 42, 0.08);
+  padding: 2rem;
+}
+
+.AuthAdminLogsView-view h4 {
+  color: var(--brand-primary);
+  font-weight: 700;
+}
+
+.AuthAdminLogsView-header {
+  align-items: flex-start;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.AuthAdminLogsView-subtitle {
+  color: var(--muted-color);
+  font-size: 0.92rem;
+  margin: 0;
+}
+
+.AuthAdminLogsView-filters {
+  align-items: end;
+  display: grid;
+  grid-template-columns: minmax(180px, 260px) auto;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.AuthAdminLogsView-filters label {
+  color: #111827;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+
+.AuthAdminLogsView-filterActions {
+  display: flex;
+  align-items: center;
+}
+
+.AuthAdminLogsView-table {
+  --bs-table-bg: transparent;
+  --bs-table-hover-bg: var(--tertiary-color);
+}
+
+.AuthAdminLogsView-view .table th {
+  border-bottom: 1px solid var(--border-color);
+  color: var(--brand-primary);
+  font-size: 0.9rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.AuthAdminLogsView-view .table td {
+  border-bottom: 1px solid var(--border-color);
+  font-size: 0.9rem;
+  vertical-align: middle;
+}
+
+.AuthAdminLogsView-idCell {
+  color: var(--muted-color);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.AuthAdminLogsView-dateCell {
+  white-space: nowrap;
+}
+
+.AuthAdminLogsView-actionBadge,
+.AuthAdminLogsView-categoryBadge {
+  align-items: center;
+  border-radius: 0.5rem;
+  display: inline-flex;
+  font-size: 0.78rem;
+  font-weight: 800;
+  justify-content: center;
+  line-height: 1;
+  min-height: 1.55rem;
+  padding: 0.32rem 0.6rem;
+  white-space: nowrap;
+}
+
+.AuthAdminLogsView-actionBadge {
+  background: var(--badge-bg-ok);
+  color: var(--badge-ok);
+}
+
+.AuthAdminLogsView-categoryBadge {
+  background: var(--badge-bg-quantidade);
+  color: var(--badge-quantidade);
+}
+
+.AuthAdminLogsView-detailButton {
+  background: #fff;
+  border: 1px solid var(--primary-color);
+  border-radius: 0.5rem;
+  color: var(--brand-primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.84rem;
+  font-weight: 700;
+  min-height: 2rem;
+  padding: 0.3rem 0.7rem;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  white-space: nowrap;
+}
+
+.AuthAdminLogsView-detailButton:hover,
+.AuthAdminLogsView-detailButton:focus-visible {
+  background: var(--tertiary-color);
+  border-color: var(--primary-color);
+  color: var(--brand-primary);
+  box-shadow: 0 0.35rem 0.9rem var(--box-shadow);
+  transform: translateY(-1px);
+}
+
+.AuthAdminLogsView-modal {
+  border: 0;
+  border-radius: 0.75rem;
+}
+
+.AuthAdminLogsView-json {
+  background: #111827;
+  border-radius: 0.6rem;
+  color: #f9fafb;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin: 0;
+  max-height: 65vh;
+  overflow: auto;
+  padding: 1rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+@media (max-width: 768px) {
+  .AuthAdminLogsView-view {
+    border-radius: 0.5rem;
+    padding: 1rem;
+  }
+
+  .AuthAdminLogsView-header {
+    flex-direction: column;
+  }
+
+  .AuthAdminLogsView-filters {
+    grid-template-columns: 1fr;
+  }
+
+  .AuthAdminLogsView-filterActions,
+  .AuthAdminLogsView-filterActions .base-btn {
+    width: 100%;
+  }
+
+  .AuthAdminLogsView-view .table-responsive {
+    margin: -1rem;
+    padding: 1rem;
+  }
+}

@@ -1,0 +1,331 @@
+.Financeiro-view {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+}
+
+.Financeiro-header {
+  align-items: flex-start;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.Financeiro-header h1 {
+  color: var(--text-color);
+  font-size: 1.55rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.Financeiro-header p {
+  color: var(--muted-color);
+  font-weight: 700;
+  margin: 0.25rem 0 0;
+}
+
+.Financeiro-filter {
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-bottom: 1rem;
+  padding: 0.85rem;
+}
+
+.Financeiro-filterGroup {
+  align-items: end;
+  display: grid;
+  gap: 0.65rem;
+  grid-template-columns: minmax(7rem, 1fr) minmax(7rem, 1fr) auto;
+}
+
+.Financeiro-filter label {
+  color: var(--text-color);
+  display: grid;
+  font-size: 0.85rem;
+  font-weight: 800;
+  gap: 0.35rem;
+}
+
+.Financeiro-cards {
+  display: grid;
+  gap: 0.65rem;
+  grid-template-columns: repeat(auto-fit, minmax(10.5rem, 1fr));
+  margin-bottom: 1rem;
+}
+
+.Financeiro-card {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  display: grid;
+  gap: 0.2rem;
+  min-height: 4.3rem;
+  padding: 0.75rem;
+}
+
+.Financeiro-card span {
+  color: var(--muted-color);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.Financeiro-card strong {
+  color: var(--text-color);
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.Financeiro-card--danger {
+  background: #FCEBEB;
+  border-color: rgba(121, 31, 31, 0.25);
+}
+
+.Financeiro-card--danger strong,
+.Financeiro-card--danger span {
+  color: #791F1F;
+}
+
+.Financeiro-card--muted {
+  background: #F1EFE8;
+  border-color: rgba(68, 68, 65, 0.18);
+}
+
+.Financeiro-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.Financeiro-tabs button {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 0.45rem;
+  color: var(--muted-color);
+  font-weight: 800;
+  min-height: 2.35rem;
+  padding: 0.45rem 0.8rem;
+}
+
+.Financeiro-tabs button:hover,
+.Financeiro-tabs button:focus-visible,
+.Financeiro-tabs button.active {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: #ffffff;
+}
+
+.Financeiro-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.Financeiro-stack {
+  display: grid;
+  gap: 1rem;
+}
+
+.Financeiro-panel {
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.Financeiro-panelHeader {
+  align-items: center;
+  display: flex;
+  gap: 0.75rem;
+  justify-content: space-between;
+  margin-bottom: 0.8rem;
+}
+
+.Financeiro-panelActions {
+  align-items: center;
+  display: flex;
+  gap: 0.45rem;
+}
+
+.Financeiro-inlineSelect {
+  align-items: center;
+  color: var(--muted-color);
+  display: inline-flex;
+  font-size: 0.78rem;
+  font-weight: 800;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.Financeiro-inlineSelect .form-select {
+  font-size: 0.85rem;
+  font-weight: 700;
+  min-height: 2rem;
+  min-width: 9rem;
+  padding: 0.25rem 2rem 0.25rem 0.6rem;
+}
+
+.Financeiro-panel h2 {
+  color: var(--text-color);
+  font-size: 1rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+.Financeiro-panel > h2 {
+  margin-bottom: 0.8rem;
+}
+
+.Financeiro-chartToggle {
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 0.45rem;
+  display: inline-flex;
+  overflow: hidden;
+}
+
+.Financeiro-chartToggle button {
+  background: transparent;
+  border: 0;
+  color: var(--muted-color);
+  font-size: 0.78rem;
+  font-weight: 800;
+  min-height: 2rem;
+  padding: 0.35rem 0.65rem;
+}
+
+.Financeiro-chartToggle button + button {
+  border-left: 1px solid var(--border-color);
+}
+
+.Financeiro-chartToggle button:hover,
+.Financeiro-chartToggle button:focus-visible,
+.Financeiro-chartToggle button.active {
+  background: var(--primary-color);
+  color: #ffffff;
+}
+
+.Financeiro-iconButton {
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 0.45rem;
+  color: var(--muted-color);
+  display: inline-flex;
+  height: 2.1rem;
+  justify-content: center;
+  width: 2.1rem;
+}
+
+.Financeiro-iconButton:hover,
+.Financeiro-iconButton:focus-visible {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: #ffffff;
+}
+
+.Financeiro-chart {
+  height: 18rem;
+  min-height: 18rem;
+  position: relative;
+}
+
+.Financeiro-modal .modal-content {
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+}
+
+.Financeiro-modal .modal-header {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.Financeiro-roomsModalDialog {
+  max-width: min(72rem, calc(100vw - 2rem));
+}
+
+.Financeiro-roomsModalDialog .modal-body {
+  max-height: calc(100vh - 10rem);
+  overflow: auto;
+}
+
+.Financeiro-tableWrap {
+  overflow-x: auto;
+}
+
+.Financeiro-table {
+  border-collapse: collapse;
+  min-width: 100%;
+  width: 100%;
+}
+
+.Financeiro-table th,
+.Financeiro-table td {
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-color);
+  padding: 0.65rem 0.5rem;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.Financeiro-table th {
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.Financeiro-table td {
+  font-size: 0.9rem;
+}
+
+.Financeiro-empty,
+.Financeiro-emptyState,
+.Financeiro-loading {
+  color: var(--muted-color);
+  font-weight: 800;
+  text-align: center;
+}
+
+.Financeiro-emptyState {
+  align-items: center;
+  background: var(--bg-color);
+  border: 1px dashed var(--border-color);
+  border-radius: 0.5rem;
+  display: flex;
+  justify-content: center;
+  min-height: 9rem;
+}
+
+.Financeiro-loading {
+  background: #F1EFE8;
+  border: 1px solid rgba(68, 68, 65, 0.18);
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  padding: 0.6rem;
+}
+
+@media (max-width: 1200px) {
+  .Financeiro-filter,
+  .Financeiro-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .Financeiro-view {
+    padding: 1rem;
+  }
+
+  .Financeiro-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .Financeiro-filterGroup {
+    grid-template-columns: 1fr;
+  }
+}

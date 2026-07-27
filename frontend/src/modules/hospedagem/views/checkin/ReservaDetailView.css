@@ -1,0 +1,102 @@
+.AppHospedagem-detailHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.AppHospedagem-detailHeader--payment {
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+.AppHospedagem-detailHeader--payment > h4 {
+  display: none;
+}
+
+.AppHospedagem-detailGrid {
+  display: grid;
+  grid-template-columns: minmax(320px, 0.75fr) minmax(420px, 1.1fr);
+  gap: 1.5rem;
+}
+
+.AppHospedagem-detailGrid .AppHospedagem-sectionTitle {
+  margin-top: 0;
+}
+
+.AppHospedagem-emptyPayments {
+  align-items: center;
+  background: #f8f9fa;
+  border: 1px solid #d8dee5;
+  border-radius: 0.35rem;
+  color: #374151;
+  display: flex;
+  justify-content: center;
+  min-height: 122px;
+  padding: 1rem;
+}
+
+.AppHospedagem-sectionTitle {
+  margin: 1rem 0 0.75rem;
+}
+
+.AppHospedagem-iconButton {
+  height: 2.3rem;
+  width: 2.6rem;
+}
+
+.AppHospedagem-detailHeader .btn-outline-secondary:not(:disabled):hover,
+.AppHospedagem-detailHeader .btn-outline-secondary:not(:disabled):focus,
+.AppHospedagem-detailHeader .btn-outline-secondary:not(:disabled):focus-visible,
+.AppHospedagem-detailHeader .btn-outline-secondary:not(:disabled):active,
+.AppHospedagem-detailHeader .base-btn--outline-secondary:not(:disabled):hover,
+.AppHospedagem-detailHeader .base-btn--outline-secondary:not(:disabled):focus,
+.AppHospedagem-detailHeader .base-btn--outline-secondary:not(:disabled):focus-visible,
+.AppHospedagem-detailHeader .base-btn--outline-secondary:not(:disabled):active,
+.AppHospedagem-detailHeader .btn-outline-primary:not(:disabled):hover,
+.AppHospedagem-detailHeader .btn-outline-primary:not(:disabled):focus,
+.AppHospedagem-detailHeader .btn-outline-primary:not(:disabled):focus-visible,
+.AppHospedagem-detailHeader .btn-outline-primary:not(:disabled):active,
+.AppHospedagem-detailHeader .base-btn--outline-primary:not(:disabled):hover,
+.AppHospedagem-detailHeader .base-btn--outline-primary:not(:disabled):focus,
+.AppHospedagem-detailHeader .base-btn--outline-primary:not(:disabled):focus-visible,
+.AppHospedagem-detailHeader .base-btn--outline-primary:not(:disabled):active {
+  background-color: #ffffff !important;
+  border-color: var(--primary-color) !important;
+  color: var(--primary-color) !important;
+  box-shadow: none !important;
+}
+
+.AppHospedagem-pill {
+  background: #fff;
+  border-radius: 0.35rem;
+  display: inline-block;
+  font-weight: 700;
+  min-width: 3.2rem;
+  padding: 0.3rem 0.7rem;
+  text-align: center;
+}
+
+.AppHospedagem-pill--ap {
+  background: #eeedfe;
+  color: #3c3489;
+}
+
+.AppHospedagem-pill--pending {
+  background: #fff4df;
+  color: #8a4b00;
+}
+
+@media (max-width: 1200px) {
+  .AppHospedagem-detailGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .AppHospedagem-detailHeader {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
