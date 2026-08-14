@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Tempo de geração: 27/07/2026 às 19:08
+-- Tempo de geração: 14/08/2026 às 14:56
 -- Versão do servidor: 8.0.46
 -- Versão do PHP: 8.3.26
 
@@ -389,54 +389,6 @@ CREATE TABLE `tipo_documento` (
   `ativo` tinyint(1) NOT NULL DEFAULT '1',
   `criado_em` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Dados iniciais da aplicação
--- Usuário: admin@gmail.com
--- Senha: admin123
---
-
-INSERT INTO `auth_users` (
-  `id`, `nome`, `usuario`, `senha`, `tipo`, `id_funcionario`, `ativo`,
-  `password_changed_at`, `precisa_trocar_senha`, `session_version`
-) VALUES (
-  '00000000-0000-4000-8000-000000000001',
-  'Administrador',
-  'admin@gmail.com',
-  '$2y$12$bE.FFa2JP/LDlju/aeXSjO/IqyLKjP3BLbZNfQ/V4yccAG1tc.R7O',
-  'admin',
-  NULL,
-  1,
-  CURRENT_TIMESTAMP,
-  0,
-  1
-);
-
-INSERT INTO `app_config`
-  (`config_key`, `config_value`, `value_type`, `config_group`, `label`, `description`, `min_value`, `max_value`)
-VALUES
-  ('session_timeout_minutes', '720', 'integer', 'security', 'Timeout da sessão (minutos)', 'Tempo máximo de inatividade antes de encerrar a sessão.', 5, 1440),
-  ('login_max_attempts', '5', 'integer', 'security', 'Tentativas de login', 'Quantidade de tentativas inválidas antes do bloqueio.', 1, 20),
-  ('login_lockout_minutes', '15', 'integer', 'security', 'Duração do bloqueio (minutos)', 'Tempo de bloqueio após exceder as tentativas.', 1, 1440),
-  ('password_min_length', '8', 'integer', 'security', 'Tamanho mínimo da senha', 'Quantidade mínima de caracteres para novas senhas.', 8, 128),
-  ('reservation_auto_close_days', '2', 'integer', 'reservation', 'Prazo para fechamento automático (dias)', 'Dias após o checkout para fechamento automático sem pagamento.', 0, 30),
-  ('stock_default_minimum', '10', 'integer', 'inventory', 'Estoque mínimo padrão', 'Quantidade mínima usada ao criar um item.', 0, 100000),
-  ('report_max_range_days', '366', 'integer', 'report', 'Período máximo do relatório (dias)', 'Limite de dias aceito em um único relatório.', 1, 3660),
-  ('report_include_zero_stock', '1', 'boolean', 'report', 'Incluir itens sem movimentação', 'Exibe também itens sem saldo ou movimentação no período.', NULL, NULL);
-
-INSERT INTO `hotel_quarto_preco` (`tipo`, `preco_padrao`, `preco_2_pessoas`) VALUES
-  ('SOLTEIRO', 120.00, 150.00),
-  ('CASAL', 180.00, 180.00),
-  ('DUPLO', 180.00, 210.00),
-  ('TRIPLO', 240.00, 270.00);
-
-INSERT INTO `financeiro_forma_pagamento` (`id_forma_pagamento`, `nome_forma_pagamento`) VALUES
-  (1, 'DINHEIRO'),
-  (2, 'PIX'),
-  (3, 'CARTAO DE DEBITO'),
-  (4, 'CARTAO DE CREDITO');
 
 --
 -- Índices para tabelas despejadas
